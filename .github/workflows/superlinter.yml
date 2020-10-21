@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
@@ -23,31 +23,3 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and Run Tests
-        run: mvn test "-Dmaven.test.failure.ignore=true"
-      - name: Publish Test Report
-        uses: scacap/action-surefire-report@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1.3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          check_name: Unit Test Results
-          files: target/surefire-reports/TEST-*.xml
-          report_individual_runs: true
-          deduplicate_classes_by_file_name: false
-      - name: Code coverage report
-        uses: romeovs/lcov-reporter-action@v0.2.16
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./coverage/lcov.info
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: "d53341ff-5af9-4e68-9fbb-1b5cb320b7dd"
-          file: ./target/site/jacoco/jacoco.xml
-          directory: ./target/site/jacoco/
-          flags: unittests
-          verbose: true
