@@ -1,7 +1,7 @@
 package com.phonebookservice.server;
 
 public class Main {
-  
+
   /**
    * Checks for value.
    * 
@@ -10,5 +10,5 @@ public class Main {
   public static boolean checkValue() {
     return true;
   }
-  
+
 }
