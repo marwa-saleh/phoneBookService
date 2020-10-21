@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.phonebookservice.server.Main;
 
 public class TestMain {
-  
+
   /**
    * test method checks for value.
    */
