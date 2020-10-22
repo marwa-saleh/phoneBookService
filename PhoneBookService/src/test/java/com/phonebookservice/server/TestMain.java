@@ -1,8 +1,7 @@
 package test.java.com.phonebookservice.server;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import main.java.com.phonebookservice.server.Main;
 
@@ -13,6 +12,6 @@ public class TestMain {
      */
     @Test
     public void testMain() {
-        assertEquals(Boolean.TRUE, Main.checkValue());
+        Assert.assertEquals(Boolean.TRUE, Main.checkValue());
     }
 }
