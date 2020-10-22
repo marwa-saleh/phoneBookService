@@ -8,4 +8,4 @@
  * @author somebody
  * @version 1.0
  */
-package com.phonebookservice.server;
+package main.java.com.phonebookservice.server;
