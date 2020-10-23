@@ -23,13 +23,19 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Build and Run Tests
+        run: mvn test --batch-mode -Dmaven.test.failure.ignore=true
+      - name: Publish Test Report
+        uses: scacap/action-surefire-report@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+		  
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.3
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           check_name: Unit Test Results
-          files: surefire-reports/TEST-*.xml
+          files: target/surefire-reports/TEST-*.xml
           report_individual_runs: true
           deduplicate_classes_by_file_name: false
