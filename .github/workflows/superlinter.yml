@@ -24,7 +24,7 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and Run Tests
-        run: mvn test --batch-mode -Dmaven.test.failure.ignore=true
+        run: mvn test --batch-mode "-Dmaven.test.failure.ignore=true"
       - name: Publish Test Report
         uses: scacap/action-surefire-report@v1
         with:
