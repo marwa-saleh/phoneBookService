@@ -5,7 +5,6 @@
 	<groupId>PhoneBookService</groupId>
 	<artifactId>PhoneBookService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PhoneBookService</name>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
