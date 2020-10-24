@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
@@ -24,7 +24,7 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and Run Tests
-        run: mvn test "-Dmaven.test.failure.ignore=true" "-DgeneratePom=true"
+        run: mvn test -f /github/workspace/PhoneBookService/pom.xml "-Dmaven.test.failure.ignore=true"
       - name: Publish Test Report
         uses: scacap/action-surefire-report@v1
         with:
