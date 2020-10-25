@@ -51,3 +51,5 @@ jobs:
           directory: ./target/site/jacoco/
           flags: unittests
           verbose: true
+after_success:
+      - bash <(curl -s https://codecov.io/bash) -t uuid-repo-token
