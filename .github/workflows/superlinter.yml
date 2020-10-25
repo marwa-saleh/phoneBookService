@@ -47,7 +47,7 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./index.html
+          file: ./target/site/jacoco/index.html
           directory: ./target/site/jacoco/
           flags: unittests
           verbose: true
