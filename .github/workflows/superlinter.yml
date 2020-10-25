@@ -42,11 +42,11 @@ jobs:
         uses: romeovs/lcov-reporter-action@v0.2.16
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./target/site/jacoco/index.html
+          lcov-file: ./coverage/lcov.info
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: "d53341ff-5af9-4e68-9fbb-1b5cb320b7dd"
           file: ./target/site/jacoco/index.html
           directory: ./target/site/jacoco/
           flags: unittests
