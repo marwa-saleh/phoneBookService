@@ -47,9 +47,7 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: "d53341ff-5af9-4e68-9fbb-1b5cb320b7dd"
-          file: ./target/site/jacoco/index.html
+          file: ./target/site/jacoco/jacoco.xml
           directory: ./target/site/jacoco/
           flags: unittests
           verbose: true
-after_success:
-      - bash <(curl -s https://codecov.io/bash) -t uuid-repo-token
