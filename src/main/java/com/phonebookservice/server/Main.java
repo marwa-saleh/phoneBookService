@@ -13,4 +13,13 @@ public final class Main {
     public static boolean checkValue() {
         return true;
     }
+
+    /**
+     * Checks for value.
+     *
+     * @return false
+     */
+    public static boolean checkForValue() {
+        return false;
+    }
 }
