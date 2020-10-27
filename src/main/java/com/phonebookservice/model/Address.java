@@ -1,31 +1,22 @@
 package main.java.com.phonebookservice.model;
 
 public class Address {
-    /**
-     * street.
-     */
     private String street;
-    /**
-     * district.
-     */
     private String district;
-    /**
-     * country.
-     */
     private String country;
 
     /**
      * address constructor.
      *
-     * @param streetValue   the street.
-     * @param districtValue the district.
-     * @param countryValue  the country.
+     * @param street   the street.
+     * @param district the district.
+     * @param country  the country.
      */
-    public Address(final String streetValue, final String districtValue,
-            final String countryValue) {
-        this.street = streetValue;
-        this.district = districtValue;
-        this.country = countryValue;
+    public Address(final String street, final String district,
+            final String country) {
+        this.street = street;
+        this.district = district;
+        this.country = country;
     }
 
 }

@@ -4,6 +4,7 @@ import main.java.com.phonebookservice.exception.PhoneBookControllerException;
 import main.java.com.phonebookservice.model.Contact;
 import main.java.com.phonebookservice.model.Model;
 import main.java.com.phonebookservice.server.DBIf;
+import main.java.com.phonebookservice.util.Messages;
 import main.java.com.phonebookservice.util.Util;
 
 public class ContactController extends AbstractController {
@@ -22,11 +23,13 @@ public class ContactController extends AbstractController {
         final DBIf database = getDatabase();
 
         if (database == null) {
-            throw new PhoneBookControllerException("database not found");
+            throw new PhoneBookControllerException(
+                    Messages.ERROR_DATABASE_NOT_FOUND);
         }
 
         if (model == null || !(model instanceof Contact)) {
-            throw new PhoneBookControllerException("invalid object");
+            throw new PhoneBookControllerException(
+                    Messages.ERROR_OBJECT_INVALID);
         }
 
         final Contact contact = (Contact) model;
@@ -43,7 +46,7 @@ public class ContactController extends AbstractController {
     private String validateContact(final Contact contact) {
         if (Util.isNullOrEmptyString(contact.getFirstName())
                 || Util.isNullOrEmptyList(contact.getPhoneNumbers())) {
-            return "missing one of mandatory fields:{firstName,phoneNumber}";
+            return Messages.ERROR_MANDATORY_FIELDS_MISSING;
         }
 
         return null;

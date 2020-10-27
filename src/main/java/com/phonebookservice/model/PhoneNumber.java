@@ -1,25 +1,19 @@
 package main.java.com.phonebookservice.model;
 
 public class PhoneNumber {
-    /**
-     * phone label.
-     */
     private String label;
-    /**
-     * social phone number.
-     */
-    private String phoneNumber;
+    private String number;
 
     /**
      * phone number constructor.
      *
-     * @param labelValue       the label.
-     * @param phoneNumberValue the phone number.
+     * @param label  the label.
+     * @param number the phone number.
      */
-    public PhoneNumber(final String labelValue, final String phoneNumberValue) {
+    public PhoneNumber(final String label, final String number) {
         super();
-        this.label = labelValue;
-        this.phoneNumber = phoneNumberValue;
+        this.label = label;
+        this.number = number;
     }
 
 }

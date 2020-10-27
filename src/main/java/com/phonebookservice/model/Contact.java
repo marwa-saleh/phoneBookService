@@ -3,29 +3,11 @@ package main.java.com.phonebookservice.model;
 import java.util.List;
 
 public class Contact implements Model {
-    /**
-     * first name.
-     */
     private String firstName;
-    /**
-     * last name.
-     */
     private String lastName;
-    /**
-     * city.
-     */
     private String city;
-    /**
-     * list of addresses.
-     */
     private List<Address> addresses;
-    /**
-     * list of phone numbers.
-     */
     private List<PhoneNumber> phoneNumbers;
-    /**
-     * list of social profiles.
-     */
     private List<SocialProfile> socialProfiles;
 
     /**
@@ -40,20 +22,20 @@ public class Contact implements Model {
     /**
      * contact constructor.
      *
-     * @param firstNameValue       the first name.
-     * @param lastNameValue        the last name.
-     * @param cityValue            the city.
+     * @param firstName            the first name.
+     * @param lastName             the last name.
+     * @param city                 the city.
      * @param listOfAddress        the addresses.
      * @param listOfPhoneNumbers   the phone numbers.
      * @param listOfSocialProfiles the social profiles.
      */
-    public Contact(final String firstNameValue, final String lastNameValue,
-            final String cityValue, final List<Address> listOfAddress,
+    public Contact(final String firstName, final String lastName,
+            final String city, final List<Address> listOfAddress,
             final List<PhoneNumber> listOfPhoneNumbers,
             final List<SocialProfile> listOfSocialProfiles) {
-        this.firstName = firstNameValue;
-        this.lastName = lastNameValue;
-        this.city = cityValue;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
         this.addresses = listOfAddress;
         this.phoneNumbers = listOfPhoneNumbers;
         this.socialProfiles = listOfSocialProfiles;
