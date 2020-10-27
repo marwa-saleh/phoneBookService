@@ -13,7 +13,6 @@ import main.java.com.phonebookservice.model.Contact;
 import main.java.com.phonebookservice.model.Model;
 import main.java.com.phonebookservice.model.PhoneNumber;
 import main.java.com.phonebookservice.server.DBIf;
-import main.java.com.phonebookservice.server.FileAdapter;
 import main.java.com.phonebookservice.util.Messages;
 import main.java.com.phonebookservice.util.Util;
 
@@ -50,9 +49,9 @@ public class TestContactController {
      */
     @Test
     public void testContactWithNoContact() {
-        final DBIf databse = new FileAdapter();
+        final DBIf databaseMock = Mockito.mock(DBIf.class);
         final ContactController contacController = new ContactController(
-                databse);
+                databaseMock);
         final Exception exception = Assertions
                 .assertThrows(PhoneBookControllerException.class, () -> {
                     contacController.create(null);
@@ -67,9 +66,9 @@ public class TestContactController {
      */
     @Test
     public void testContactWithNoFirstName() {
-        final DBIf databse = new FileAdapter();
+        final DBIf databaseMock = Mockito.mock(DBIf.class);
         final ContactController contacController = new ContactController(
-                databse);
+                databaseMock);
         final Exception exception = Assertions
                 .assertThrows(PhoneBookControllerException.class, () -> {
                     contacController
@@ -85,9 +84,9 @@ public class TestContactController {
      */
     @Test
     public void testContactWithNoPhoneNumber() {
-        final DBIf databse = new FileAdapter();
+        final DBIf databaseMock = Mockito.mock(DBIf.class);
         final ContactController contacController = new ContactController(
-                databse);
+                databaseMock);
         final Exception exception = Assertions
                 .assertThrows(PhoneBookControllerException.class, () -> {
                     contacController
@@ -103,9 +102,9 @@ public class TestContactController {
      */
     @Test
     public void testContact() {
-        DBIf databaseMock = Mockito.mock(DBIf.class);
-
-        Model model = createContact(CONTACT_FIRST_NAME, CONTACT_PHONE_NUMBER);
+        final DBIf databaseMock = Mockito.mock(DBIf.class);
+        final Model model = createContact(CONTACT_FIRST_NAME,
+                CONTACT_PHONE_NUMBER);
         Mockito.doNothing().when(databaseMock).create((Contact) model);
 
         final ContactController contacController = new ContactController(
