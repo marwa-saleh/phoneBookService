@@ -4,10 +4,6 @@ import main.java.com.phonebookservice.model.Model;
 import main.java.com.phonebookservice.server.DBIf;
 
 public abstract class AbstractController {
-
-    /**
-     * database the database interface.
-     */
     private DBIf databse = null;
 
     /**
