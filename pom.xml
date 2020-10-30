@@ -35,6 +35,11 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.2</version>
+				 <configuration>
+                <sources>
+                    <source>test/java</source>
+                </sources>
+                    </configuration>
 				<executions>
 					<execution>
 						<goals>
