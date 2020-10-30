@@ -1,4 +1,4 @@
-package main.java.com.phonebookservice.server;
+package com.phonebookservice.server;
 
 public final class Main {
 
