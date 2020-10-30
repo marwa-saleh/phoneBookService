@@ -1,5 +1,10 @@
 package com.phonebookservice.util;
 
+/**
+ * Error messages.
+ *
+ * @author Marwa Saleh
+ */
 public abstract class ErrorMessages {
 
     public static final String ERROR_DATABASE_NOT_FOUND //

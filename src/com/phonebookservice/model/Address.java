@@ -1,5 +1,10 @@
 package com.phonebookservice.model;
 
+/**
+ * Address class.
+ *
+ * @author Marwa Saleh
+ */
 public class Address {
     private String street;
     private String district;

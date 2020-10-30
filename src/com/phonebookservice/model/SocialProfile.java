@@ -1,5 +1,10 @@
 package com.phonebookservice.model;
 
+/**
+ * social profile class.
+ *
+ * @author Marwa Saleh
+ */
 public class SocialProfile {
     public enum SocialMediaType {
         FACEBOOK, TWITTER, LINKEDIN, SKYPE, ZOOM;

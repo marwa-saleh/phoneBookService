@@ -1,5 +1,10 @@
 package com.phonebookservice.util;
 
+/**
+ * string utility class.
+ *
+ * @author Marwa Saleh
+ */
 public abstract class StringUtility {
 
     /**

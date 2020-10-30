@@ -3,6 +3,12 @@ package com.phonebookservice.controller;
 import com.phonebookservice.model.Model;
 import com.phonebookservice.server.IDataAccessAdapter;
 
+/**
+ * abstract controller.
+ *
+ * @author Marwa Saleh
+ * @param <T> model
+ */
 public abstract class AbstractController<T extends Model> {
     private final IDataAccessAdapter database;
 

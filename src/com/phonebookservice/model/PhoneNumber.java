@@ -1,5 +1,10 @@
 package com.phonebookservice.model;
 
+/**
+ * Phone number class.
+ *
+ * @author Marwa Saleh
+ */
 public class PhoneNumber {
     public enum PhoneLabel {
         HOME, WORK, MOBILE;

@@ -2,6 +2,11 @@ package com.phonebookservice.model;
 
 import java.util.List;
 
+/**
+ * Contact class.
+ *
+ * @author Marwa Saleh
+ */
 public class Contact implements Model {
     private String firstName;
     private String lastName;

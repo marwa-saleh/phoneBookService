@@ -2,6 +2,11 @@ package com.phonebookservice.model;
 
 import java.util.List;
 
+/**
+ * Contact builder class.
+ *
+ * @author Marwa Saleh
+ */
 public class ContactBuilder {
     private String firstName;
     private String lastName;

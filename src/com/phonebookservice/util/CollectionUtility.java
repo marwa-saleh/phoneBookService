@@ -2,6 +2,11 @@ package com.phonebookservice.util;
 
 import java.util.Collection;
 
+/**
+ * collection utility class.
+ *
+ * @author Marwa Saleh
+ */
 public abstract class CollectionUtility {
 
     /**
