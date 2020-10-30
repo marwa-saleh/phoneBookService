@@ -1,4 +1,4 @@
-package test.com.phonebookservice.controller;
+package test.java.com.phonebookservice.controller;
 
 import java.util.Arrays;
 
