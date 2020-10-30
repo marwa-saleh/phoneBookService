@@ -6,6 +6,11 @@ import com.phonebookservice.server.IDataAccessAdapter;
 import com.phonebookservice.util.ErrorMessages;
 import com.phonebookservice.util.StringUtility;
 
+/**
+ * Contact controller.
+ *
+ * @author Marwa Saleh
+ */
 public class ContactController extends AbstractController<Contact> {
 
     /**
