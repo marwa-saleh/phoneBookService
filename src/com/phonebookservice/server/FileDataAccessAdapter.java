@@ -15,7 +15,7 @@ public class FileDataAccessAdapter implements IDataAccessAdapter<Contact> {
      * @param contact the contact
      */
     @Override
-    public final void create(final Contact contact) {
+    public void create(final Contact contact) {
         throw new UnsupportedOperationException();
     }
 

@@ -1,4 +1,4 @@
-package java.com.phonebookservice.controller;
+package test.java.com.phonebookservice.controller;
 
 import java.util.Arrays;
 
@@ -10,10 +10,8 @@ import com.phonebookservice.controller.ContactController;
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.model.Address;
 import com.phonebookservice.model.Contact;
-import com.phonebookservice.model.ContactBuilder;
 import com.phonebookservice.model.PhoneNumber;
 import com.phonebookservice.model.PhoneNumber.PhoneLabel;
-import com.phonebookservice.server.FileDataAccessAdapter;
 import com.phonebookservice.server.IDataAccessAdapter;
 import com.phonebookservice.util.ErrorMessages;
 
@@ -55,7 +53,7 @@ public class TestContactController {
                 });
 
         Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_MISSING,
-                exception.getErrorMessage());
+                exception.getMessage());
     }
 
     /**
@@ -73,20 +71,7 @@ public class TestContactController {
                 });
 
         Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_LAST_NAME_MISSING,
-                exception.getErrorMessage());
-    }
-
-    /**
-     * test contact with no first name in contact object.
-     */
-    @Test
-    public void testFileDataAccessAdapter() {
-        final IDataAccessAdapter databaseMock = new FileDataAccessAdapter();
-        final ContactController contacController = new ContactController(
-                databaseMock);
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            contacController.create(createContact(CONTACT_LAST_NAME));
-        });
+                exception.getMessage());
     }
 
     /**
@@ -107,13 +92,15 @@ public class TestContactController {
     }
 
     private Contact createContact(final String lastName) {
-        final Address address = new Address(CONTACT_STREET, CONTACT_DISTRICT,
-                CONTACT_COUNTRY, CONTACT_CITY);
+        final Address address = Address.builder().withStreet(CONTACT_STREET)
+                .withDistrict(CONTACT_DISTRICT).withCountry(CONTACT_COUNTRY)
+                .withCity(CONTACT_CITY).build();
 
         final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.HOME,
                 CONTACT_PHONE_NUMBER);
 
-        return new ContactBuilder(lastName).withFirstName(CONTACT_FIRST_NAME)
+        return Contact.builder().withLastName(CONTACT_LAST_NAME)
+                .withFirstName(CONTACT_FIRST_NAME)
                 .withAddresses(Arrays.asList(address))
                 .withPhoneNumbers(Arrays.asList(phoneNumber)).build();
     }

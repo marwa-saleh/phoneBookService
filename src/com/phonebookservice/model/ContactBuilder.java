@@ -16,11 +16,8 @@ public class ContactBuilder {
 
     /**
      * Initialization of contact builder.
-     *
-     * @param lastName the last name.
      */
-    public ContactBuilder(final String lastName) {
-        this.lastName = lastName;
+    public ContactBuilder() {
     }
 
     /**
@@ -43,6 +40,17 @@ public class ContactBuilder {
      */
     public ContactBuilder withFirstName(final String firstName) {
         this.firstName = firstName;
+        return this;
+    }
+
+    /**
+     * set last name.
+     *
+     * @param lastName the last name.
+     * @return contact builder
+     */
+    public ContactBuilder withLastName(final String lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -75,8 +83,9 @@ public class ContactBuilder {
      * @return contact.
      */
     public Contact build() {
-        Contact contact = new Contact(lastName);
+        Contact contact = new Contact();
         contact.setFirstName(firstName);
+        contact.setLastName(lastName);
         contact.setAddresses(addresses);
         contact.setPhoneNumbers(phoneNumbers);
         contact.setSocialProfiles(socialProfiles);

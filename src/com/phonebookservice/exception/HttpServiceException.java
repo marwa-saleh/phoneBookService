@@ -1,31 +1,43 @@
 package com.phonebookservice.exception;
 
-import javax.xml.ws.http.HTTPException;
-
 /**
  * Exception class for http service.
  *
  * @author Marwa Saleh
  */
-public class HttpServiceException extends HTTPException {
+public class HttpServiceException extends RuntimeException {
     private static final int CLIENT_ERROR_FIRST_DIGIT = 4;
     private static final int MAX_NUMBER_OF_DIVISIBLITY = 100;
     private final int statusCode;
-    private final String errorMessage;
     private final String errorCode;
 
     /**
      * Initialization of http service exception.
      *
-     * @param statusCode   the status code
+     * @param statusCode   the status code.
+     * @param errorMessage the error message.
+     * @param errorCode    the error code.
+     * @param cause        the cause.
+     */
+    protected HttpServiceException(final int statusCode,
+            final String errorMessage, final String errorCode,
+            final Throwable cause) {
+        super(errorMessage, cause);
+        this.statusCode = statusCode;
+        this.errorCode = errorCode;
+    }
+
+    /**
+     * Initialization of http service exception.
+     *
+     * @param statusCode   the status code.
      * @param errorMessage the error message.
      * @param errorCode    the error code.
      */
     protected HttpServiceException(final int statusCode,
             final String errorMessage, final String errorCode) {
-        super(statusCode);
+        super(errorMessage);
         this.statusCode = statusCode;
-        this.errorMessage = errorMessage;
         this.errorCode = errorCode;
     }
 
@@ -36,21 +48,17 @@ public class HttpServiceException extends HTTPException {
      */
     public boolean isClientException() {
 
-        if (statusCode
-                % MAX_NUMBER_OF_DIVISIBLITY == CLIENT_ERROR_FIRST_DIGIT) {
-            return true;
-        }
-
-        return false;
+        return statusCode
+                / MAX_NUMBER_OF_DIVISIBLITY == CLIENT_ERROR_FIRST_DIGIT;
     }
 
     /**
-     * get error message.
+     * get status code.
      *
-     * @return the error message.
+     * @return the status code.
      */
-    public String getErrorMessage() {
-        return errorMessage;
+    public int getStatusCode() {
+        return statusCode;
     }
 
     /**

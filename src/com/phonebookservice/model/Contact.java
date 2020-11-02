@@ -16,11 +16,8 @@ public class Contact implements Model {
 
     /**
      * Initialization of contact.
-     *
-     * @param lastName the last name.
      */
-    public Contact(final String lastName) {
-        this.lastName = lastName;
+    public Contact() {
     }
 
     /**
@@ -69,6 +66,15 @@ public class Contact implements Model {
     }
 
     /**
+     * set last name.
+     *
+     * @param lastName the lastName.
+     */
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
      * get addresses.
      *
      * @return list of addresses.
@@ -102,5 +108,14 @@ public class Contact implements Model {
      */
     public void setSocialProfiles(final List<SocialProfile> socialProfiles) {
         this.socialProfiles = socialProfiles;
+    }
+
+    /**
+     * builder.
+     *
+     * @return contact builder.
+     */
+    public static ContactBuilder builder() {
+        return new ContactBuilder();
     }
 }
