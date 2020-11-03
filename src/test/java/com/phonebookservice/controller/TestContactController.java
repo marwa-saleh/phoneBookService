@@ -1,7 +1,9 @@
 package test.java.com.phonebookservice.controller;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -23,6 +25,17 @@ public class TestContactController {
     private static final String CONTACT_COUNTRY = "Alexandria";
     private static final String CONTACT_STREET = "Road Street";
     private static final String CONTACT_DISTRICT = "Smouha";
+    private static final Long CONTACT_ID = 123456L;
+
+    /**
+     * reset singleton after each test.
+     */
+    @AfterEach
+    public void resetSingleton() throws Exception {
+        Field instance = ContactController.class.getDeclaredField("singleton");
+        instance.setAccessible(true);
+        instance.set(null, null);
+    }
 
     /**
      * test create contact with no database.
@@ -87,6 +100,41 @@ public class TestContactController {
         ContactController.getInstance(databaseMock).create(contact);
 
         Mockito.verify(databaseMock, Mockito.times(1)).create(contact);
+    }
+
+    /**
+     * test get contact.
+     */
+    @Test
+    public void testGetContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        final Contact existContact = createContact(CONTACT_LAST_NAME);
+        Mockito.when(databaseMock.get(CONTACT_ID)).thenReturn(existContact);
+
+        Contact contact = ContactController.getInstance(databaseMock)
+                .get(CONTACT_ID);
+
+        Assertions.assertEquals(existContact, contact);
+
+    }
+
+    /**
+     * test get contact with contact not exist.
+     */
+    @Test
+    public void testGetContactWithContactNotExist() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Mockito.when(databaseMock.get(CONTACT_ID)).thenReturn(null);
+
+        final BadRequestException exception = Assertions
+                .assertThrows(BadRequestException.class, () -> {
+                    ContactController.getInstance(databaseMock).get(CONTACT_ID);
+                });
+
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NULL,
+                exception.getMessage());
     }
 
     private Contact createContact(final String lastName) {

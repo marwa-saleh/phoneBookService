@@ -54,7 +54,7 @@ public final class ContactController extends AbstractController<Contact> {
      * @return contact the contact.
      */
     @Override
-    protected Contact get(final Long contactId) {
+    public Contact get(final Long contactId) {
         ContactController.checkContactId(contactId);
         final Contact contact = database.get(contactId);
         ContactController.validateContact(contact);
@@ -81,7 +81,7 @@ public final class ContactController extends AbstractController<Contact> {
      * @return contact the updated contact.
      */
     @Override
-    protected Contact update(final Long contactId, final Contact contact) {
+    public Contact update(final Long contactId, final Contact contact) {
         ContactController.checkContactId(contactId);
         ContactController.validateContact(contact);
         final Contact existedContact = database.get(contactId);
@@ -95,7 +95,7 @@ public final class ContactController extends AbstractController<Contact> {
      * @param contactId the contact id.
      */
     @Override
-    protected void delete(final Long contactId) {
+    public void delete(final Long contactId) {
         ContactController.checkContactId(contactId);
         final Contact contact = database.get(contactId);
         ContactController.validateContact(contact);
