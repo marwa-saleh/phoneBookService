@@ -7,7 +7,7 @@ package com.phonebookservice.model;
  */
 public class SocialProfile {
     public enum SocialMediaType {
-        FACEBOOK, TWITTER, LINKEDIN, SKYPE, ZOOM;
+        FACEBOOK, TWITTER, LINKEDIN, SKYPE, ZOOM, OTHER;
     }
 
     private SocialMediaType socialMediaType;

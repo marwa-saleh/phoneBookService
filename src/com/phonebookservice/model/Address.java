@@ -1,5 +1,7 @@
 package com.phonebookservice.model;
 
+import com.phonebookservice.model.builder.AddressBuilder;
+
 /**
  * Address class.
  *

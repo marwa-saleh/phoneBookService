@@ -13,13 +13,14 @@ import com.phonebookservice.util.StringUtility;
  * @author Marwa Saleh
  */
 public class ContactController extends AbstractController<Contact> {
+    private static ContactController singleton;
 
     /**
      * Initialization of contact controller.
      *
-     * @param database the database
+     * @param database the database.
      */
-    public ContactController(final IDataAccessAdapter database) {
+    protected ContactController(final IDataAccessAdapter database) {
         super(database);
 
         if (database == null) {
@@ -29,28 +30,41 @@ public class ContactController extends AbstractController<Contact> {
     }
 
     /**
+     * Get instance of contact controller.
+     *
+     * @param database the database.
+     * @return contact controller.
+     */
+    public static ContactController getInstance(
+            final IDataAccessAdapter database) {
+        if (singleton == null) {
+            singleton = new ContactController(database);
+        }
+
+        return singleton;
+    }
+
+    /**
      * create contact.
      *
      * @param contact the contact
      */
     @Override
     public void create(final Contact contact) {
-        final IDataAccessAdapter database = getDatabase();
-        validateContact(contact);
+        final IDataAccessAdapter database = super.getDatabase();
+        ContactController.validateContact(contact);
         database.create(contact);
     }
 
     private static void validateContact(final Contact contact) {
         if (contact == null) {
-            throw new BadRequestException(ErrorMessages.ERROR_CONTACT_MISSING,
-                    ErrorCode.ERROR_CONTACT_IS_NULL);
+            throw new BadRequestException(ErrorMessages.ERROR_CONTACT_IS_NULL,
+                    ErrorCode.ERROR_CONTACT_MISSING);
         }
 
         if (StringUtility.isNullOrEmptyString(contact.getLastName())) {
-            throw new BadRequestException(
-                    ErrorMessages.ERROR_CONTACT_LAST_NAME_MISSING,
-                    ErrorCode.ERROR_LAST_NAME_IS_NULL);
+            throw new BadRequestException(ErrorMessages.ERROR_LAST_NAME_IS_NULL,
+                    ErrorCode.ERROR_CONTACT_LAST_NAME_MISSING);
         }
     }
-
 }

@@ -2,6 +2,8 @@ package com.phonebookservice.model;
 
 import java.util.List;
 
+import com.phonebookservice.model.builder.ContactBuilder;
+
 /**
  * Contact class.
  *

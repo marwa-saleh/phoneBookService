@@ -5,12 +5,18 @@ package com.phonebookservice.util;
  *
  * @author Marwa Saleh
  */
-public abstract class ErrorMessages {
+public final class ErrorMessages {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private ErrorMessages() {
+    }
 
     public static final String ERROR_DATABASE_NOT_FOUND //
-            = "ERROR_DATABASE_NOT_FOUND";
-    public static final String ERROR_CONTACT_MISSING = "ERROR_CONTACT_MISSING";
-    public static final String ERROR_CONTACT_LAST_NAME_MISSING //
-            = "ERROR_LAST_NAME_MISSING";
+            = "Database object cannot be null";
+    public static final String ERROR_CONTACT_IS_NULL = "contact cannot be null";
+    public static final String ERROR_LAST_NAME_IS_NULL //
+            = "last name cannot be null";
 
 }

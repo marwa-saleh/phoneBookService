@@ -31,7 +31,7 @@ public class TestContactController {
     public void testContactWithNoDatabase() {
         final IllegalArgumentException exception = Assertions
                 .assertThrows(IllegalArgumentException.class, () -> {
-                    new ContactController(null);
+                    ContactController.getInstance(null);
                 });
 
         Assertions.assertEquals(ErrorMessages.ERROR_DATABASE_NOT_FOUND,
@@ -45,32 +45,32 @@ public class TestContactController {
     public void testContactWithNoContact() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
-        final ContactController contacController = new ContactController(
-                databaseMock);
+        final ContactController contacController = ContactController
+                .getInstance(databaseMock);
         final BadRequestException exception = Assertions
                 .assertThrows(BadRequestException.class, () -> {
                     contacController.create(null);
                 });
 
-        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_MISSING,
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NULL,
                 exception.getMessage());
     }
 
     /**
-     * test contact with no first name in contact object.
+     * test contact with no last name in contact object.
      */
     @Test
-    public void testContactWithNoFirstName() {
+    public void testContactWithNoLastName() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
-        final ContactController contacController = new ContactController(
-                databaseMock);
+        final ContactController contacController = ContactController
+                .getInstance(databaseMock);
         final BadRequestException exception = Assertions
                 .assertThrows(BadRequestException.class, () -> {
                     contacController.create(createContact(null));
                 });
 
-        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_LAST_NAME_MISSING,
+        Assertions.assertEquals(ErrorMessages.ERROR_LAST_NAME_IS_NULL,
                 exception.getMessage());
     }
 
@@ -84,9 +84,7 @@ public class TestContactController {
         final Contact contact = createContact(CONTACT_LAST_NAME);
         Mockito.doNothing().when(databaseMock).create(contact);
 
-        final ContactController contacController = new ContactController(
-                databaseMock);
-        contacController.create(contact);
+        ContactController.getInstance(databaseMock).create(contact);
 
         Mockito.verify(databaseMock, Mockito.times(1)).create(contact);
     }
@@ -99,7 +97,7 @@ public class TestContactController {
         final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.HOME,
                 CONTACT_PHONE_NUMBER);
 
-        return Contact.builder().withLastName(CONTACT_LAST_NAME)
+        return Contact.builder().withLastName(lastName)
                 .withFirstName(CONTACT_FIRST_NAME)
                 .withAddresses(Arrays.asList(address))
                 .withPhoneNumbers(Arrays.asList(phoneNumber)).build();

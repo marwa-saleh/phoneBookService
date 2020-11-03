@@ -11,10 +11,10 @@ import com.phonebookservice.exception.InternalServerException;
  *
  */
 public class TestHttpServiceException {
-    private static final String TEST_ERROR_MESSAGE = "TEST_ERROR_MESSAGE";
+    private static final String TEST_ERROR_MESSAGE = "Test error message";
     private static final String TEST_ERROR_CODE = "TEST_ERROR_CODE";
-    private static final String TEST_INTERNAL_ERROR_CODE = "Error found";
-    private static final String TEST_INTERNAL_ERROR_MESSAGE = "ERROR_FOUND";
+    private static final String TEST_INTERNAL_ERROR_MESSAGE = "Error found";
+    private static final String TEST_INTERNAL_ERROR_CODE = "ERROR_FOUND";
     private static final int TEST_BAD_REQUEST_STATUS_CODE = 400;
     private static final int TEST_INTERNAL_SERVER_STATUS_CODE = 500;
 

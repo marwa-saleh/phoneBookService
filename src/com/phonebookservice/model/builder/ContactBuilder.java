@@ -1,6 +1,11 @@
-package com.phonebookservice.model;
+package com.phonebookservice.model.builder;
 
 import java.util.List;
+
+import com.phonebookservice.model.Address;
+import com.phonebookservice.model.Contact;
+import com.phonebookservice.model.PhoneNumber;
+import com.phonebookservice.model.SocialProfile;
 
 /**
  * Contact builder class.

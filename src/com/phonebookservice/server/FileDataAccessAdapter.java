@@ -18,5 +18,4 @@ public class FileDataAccessAdapter implements IDataAccessAdapter<Contact> {
     public void create(final Contact contact) {
         throw new UnsupportedOperationException();
     }
-
 }
