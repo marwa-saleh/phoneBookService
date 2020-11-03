@@ -12,21 +12,23 @@ import com.phonebookservice.util.StringUtility;
  *
  * @author Marwa Saleh
  */
-public class ContactController extends AbstractController<Contact> {
+public final class ContactController extends AbstractController<Contact> {
     private static ContactController singleton;
+    private static IDataAccessAdapter<Contact> database;
 
     /**
      * Initialization of contact controller.
      *
      * @param database the database.
      */
-    protected ContactController(final IDataAccessAdapter database) {
+    private ContactController(final IDataAccessAdapter database) {
         super(database);
 
         if (database == null) {
             throw new IllegalArgumentException(
                     ErrorMessages.ERROR_DATABASE_NOT_FOUND);
         }
+        this.database = super.getDatabase();
     }
 
     /**
@@ -45,15 +47,60 @@ public class ContactController extends AbstractController<Contact> {
     }
 
     /**
+     * get contact.
+     *
+     * @param contactId the contact id.
+     *
+     * @return contact the contact.
+     */
+    @Override
+    protected Contact get(final Long contactId) {
+        ContactController.checkContactId(contactId);
+        final Contact contact = database.get(contactId);
+        ContactController.validateContact(contact);
+        return contact;
+    }
+
+    /**
      * create contact.
      *
      * @param contact the contact
      */
     @Override
     public void create(final Contact contact) {
-        final IDataAccessAdapter database = super.getDatabase();
         ContactController.validateContact(contact);
         database.create(contact);
+    }
+
+    /**
+     * update contact.
+     *
+     * @param contactId the contact id.
+     * @param contact   the updates of contact.
+     *
+     * @return contact the updated contact.
+     */
+    @Override
+    protected Contact update(final Long contactId, final Contact contact) {
+        ContactController.checkContactId(contactId);
+        ContactController.validateContact(contact);
+        final Contact existedContact = database.get(contactId);
+        ContactController.validateContact(existedContact);
+        return database.update(contactId, contact);
+    }
+
+    /**
+     * delete contact.
+     *
+     * @param contactId the contact id.
+     */
+    @Override
+    protected void delete(final Long contactId) {
+        ContactController.checkContactId(contactId);
+        final Contact contact = database.get(contactId);
+        ContactController.validateContact(contact);
+        database.delete(contactId);
+
     }
 
     private static void validateContact(final Contact contact) {
@@ -65,6 +112,14 @@ public class ContactController extends AbstractController<Contact> {
         if (StringUtility.isNullOrEmptyString(contact.getLastName())) {
             throw new BadRequestException(ErrorMessages.ERROR_LAST_NAME_IS_NULL,
                     ErrorCode.ERROR_CONTACT_LAST_NAME_MISSING);
+        }
+    }
+
+    private static void checkContactId(final Long contactId) {
+        if (contactId == null) {
+            throw new BadRequestException(
+                    ErrorMessages.ERROR_CONTACT_ID_IS_NULL,
+                    ErrorCode.ERROR_CONTACT_ID_MISSING);
         }
     }
 }

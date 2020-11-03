@@ -25,10 +25,10 @@ public class TestContactController {
     private static final String CONTACT_DISTRICT = "Smouha";
 
     /**
-     * test contact with no database.
+     * test create contact with no database.
      */
     @Test
-    public void testContactWithNoDatabase() {
+    public void testCreateContactWithNoDatabase() {
         final IllegalArgumentException exception = Assertions
                 .assertThrows(IllegalArgumentException.class, () -> {
                     ContactController.getInstance(null);
@@ -39,10 +39,10 @@ public class TestContactController {
     }
 
     /**
-     * test contact with no contact object.
+     * test create contact with no contact object.
      */
     @Test
-    public void testContactWithNoContact() {
+    public void testCreateContactWithNoContact() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
         final ContactController contacController = ContactController
@@ -57,10 +57,10 @@ public class TestContactController {
     }
 
     /**
-     * test contact with no last name in contact object.
+     * test create contact with no last name in contact object.
      */
     @Test
-    public void testContactWithNoLastName() {
+    public void testCreateContactWithNoLastName() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
         final ContactController contacController = ContactController
@@ -75,10 +75,10 @@ public class TestContactController {
     }
 
     /**
-     * test contact.
+     * test create contact.
      */
     @Test
-    public void testContact() {
+    public void testCreateContact() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
         final Contact contact = createContact(CONTACT_LAST_NAME);

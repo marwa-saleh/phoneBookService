@@ -18,5 +18,7 @@ public final class ErrorMessages {
     public static final String ERROR_CONTACT_IS_NULL = "contact cannot be null";
     public static final String ERROR_LAST_NAME_IS_NULL //
             = "last name cannot be null";
+    public static final String ERROR_CONTACT_ID_IS_NULL //
+            = "contact id cannot be null";
 
 }

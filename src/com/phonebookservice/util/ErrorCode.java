@@ -18,4 +18,6 @@ public final class ErrorCode {
     public static final String ERROR_CONTACT_MISSING = "ERROR_CONTACT_MISSING";
     public static final String ERROR_CONTACT_LAST_NAME_MISSING //
             = "ERROR_LAST_NAME_MISSING";
+    public static final String ERROR_CONTACT_ID_MISSING //
+            = "ERROR_CONTACT_ID_MISSING";
 }

@@ -22,11 +22,36 @@ public abstract class AbstractController<T extends Model> {
     }
 
     /**
+     * get model by id.
+     *
+     * @param modelId the model id.
+     * @return model.
+     */
+    protected abstract T get(Long modelId);
+
+    /**
      * create model.
      *
-     * @param model the model
+     * @param model the model.
      */
     protected abstract void create(T model);
+
+    /**
+     * update model.
+     *
+     * @param modelId the model id.
+     * @param model   the changed model.
+     *
+     * @return model the updated model.
+     */
+    protected abstract T update(Long modelId, T model);
+
+    /**
+     * delete model.
+     *
+     * @param modelId the model id.
+     */
+    protected abstract void delete(Long modelId);
 
     /**
      * get database.
