@@ -1,7 +1,12 @@
 package com.phonebookservice.controller;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.phonebookservice.model.Model;
 import com.phonebookservice.server.IDataAccessAdapter;
+import com.phonebookservice.util.EnumQueryParams;
+import com.phonebookservice.util.QueryParam;
 
 /**
  * abstract controller.
@@ -28,6 +33,15 @@ public abstract class AbstractController<T extends Model> {
      * @return model.
      */
     protected abstract T get(Long modelId);
+
+    /**
+     * get list of models based on filters.
+     *
+     * @param paramValues the hashmap of query params.
+     * @return list of models.
+     */
+    protected abstract List<T> getList(
+            HashMap<EnumQueryParams, QueryParam> paramValues);
 
     /**
      * create model.

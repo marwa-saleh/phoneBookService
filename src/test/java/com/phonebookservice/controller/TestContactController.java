@@ -1,6 +1,7 @@
 package test.java.com.phonebookservice.controller;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,8 +12,10 @@ import com.phonebookservice.controller.ContactController;
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.IDataAccessAdapter;
+import com.phonebookservice.util.EnumQueryParams;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
+import com.phonebookservice.util.QueryParam;
 
 import test.java.com.phonebookservice.util.TestSetUpUtil;
 
@@ -247,5 +250,18 @@ public class TestContactController {
                 .update(TestSetUpUtil.CONTACT_ID, updatedContact);
 
         Assertions.assertEquals(updatedContact, contact);
+    }
+
+    /**
+     * test list contact.
+     */
+    @Test
+    public void testListContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            ContactController.getInstance(databaseMock)
+                    .getList(new HashMap<EnumQueryParams, QueryParam>());
+        });
     }
 }

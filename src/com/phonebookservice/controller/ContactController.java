@@ -1,10 +1,15 @@
 package com.phonebookservice.controller;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.IDataAccessAdapter;
+import com.phonebookservice.util.EnumQueryParams;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
+import com.phonebookservice.util.QueryParam;
 import com.phonebookservice.util.StringUtility;
 
 /**
@@ -101,6 +106,18 @@ public final class ContactController extends AbstractController<Contact> {
         ContactController.validateExisitingContact(contact);
         database.delete(contactId);
 
+    }
+
+    /**
+     * get list of contacts based on filters.
+     *
+     * @param paramValues the hashmap of query params.
+     * @return list of contacts.
+     */
+    @Override
+    public List<Contact> getList(
+            final HashMap<EnumQueryParams, QueryParam> paramValues) {
+        throw new UnsupportedOperationException();
     }
 
     private static void validateContact(final Contact contact) {
