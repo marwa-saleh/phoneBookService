@@ -57,7 +57,7 @@ public final class ContactController extends AbstractController<Contact> {
     public Contact get(final Long contactId) {
         ContactController.checkContactId(contactId);
         final Contact contact = database.get(contactId);
-        ContactController.validateContact(contact);
+        ContactController.validateExisitingContact(contact);
         return contact;
     }
 
@@ -85,7 +85,7 @@ public final class ContactController extends AbstractController<Contact> {
         ContactController.checkContactId(contactId);
         ContactController.validateContact(contact);
         final Contact existedContact = database.get(contactId);
-        ContactController.validateContact(existedContact);
+        ContactController.validateExisitingContact(existedContact);
         return database.update(contactId, contact);
     }
 
@@ -98,7 +98,7 @@ public final class ContactController extends AbstractController<Contact> {
     public void delete(final Long contactId) {
         ContactController.checkContactId(contactId);
         final Contact contact = database.get(contactId);
-        ContactController.validateContact(contact);
+        ContactController.validateExisitingContact(contact);
         database.delete(contactId);
 
     }
@@ -112,6 +112,14 @@ public final class ContactController extends AbstractController<Contact> {
         if (StringUtility.isNullOrEmptyString(contact.getLastName())) {
             throw new BadRequestException(ErrorMessages.ERROR_LAST_NAME_IS_NULL,
                     ErrorCode.ERROR_CONTACT_LAST_NAME_MISSING);
+        }
+    }
+
+    private static void validateExisitingContact(final Contact contact) {
+        if (contact == null) {
+            throw new BadRequestException(
+                    ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
+                    ErrorCode.ERROR_CONTACT_NOT_FOUND);
         }
     }
 

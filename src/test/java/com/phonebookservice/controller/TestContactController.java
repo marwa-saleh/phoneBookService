@@ -1,7 +1,6 @@
 package test.java.com.phonebookservice.controller;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -10,22 +9,14 @@ import org.mockito.Mockito;
 
 import com.phonebookservice.controller.ContactController;
 import com.phonebookservice.exception.BadRequestException;
-import com.phonebookservice.model.Address;
 import com.phonebookservice.model.Contact;
-import com.phonebookservice.model.PhoneNumber;
-import com.phonebookservice.model.PhoneNumber.PhoneLabel;
 import com.phonebookservice.server.IDataAccessAdapter;
+import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
 
+import test.java.com.phonebookservice.util.TestSetUpUtil;
+
 public class TestContactController {
-    private static final String CONTACT_FIRST_NAME = "Marwa";
-    private static final String CONTACT_LAST_NAME = "Saleh";
-    private static final String CONTACT_PHONE_NUMBER = "0123456789";
-    private static final String CONTACT_CITY = "Egypt";
-    private static final String CONTACT_COUNTRY = "Alexandria";
-    private static final String CONTACT_STREET = "Road Street";
-    private static final String CONTACT_DISTRICT = "Smouha";
-    private static final Long CONTACT_ID = 123456L;
 
     /**
      * reset singleton after each test.
@@ -67,6 +58,9 @@ public class TestContactController {
 
         Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NULL,
                 exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_MISSING,
+                exception.getErrorCode());
     }
 
     /**
@@ -80,11 +74,14 @@ public class TestContactController {
                 .getInstance(databaseMock);
         final BadRequestException exception = Assertions
                 .assertThrows(BadRequestException.class, () -> {
-                    contacController.create(createContact(null));
+                    contacController.create(TestSetUpUtil.createContact(null));
                 });
 
         Assertions.assertEquals(ErrorMessages.ERROR_LAST_NAME_IS_NULL,
                 exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_LAST_NAME_MISSING,
+                exception.getErrorCode());
     }
 
     /**
@@ -94,7 +91,8 @@ public class TestContactController {
     public void testCreateContact() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
-        final Contact contact = createContact(CONTACT_LAST_NAME);
+        final Contact contact = TestSetUpUtil
+                .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
         Mockito.doNothing().when(databaseMock).create(contact);
 
         ContactController.getInstance(databaseMock).create(contact);
@@ -109,11 +107,13 @@ public class TestContactController {
     public void testGetContact() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
-        final Contact existContact = createContact(CONTACT_LAST_NAME);
-        Mockito.when(databaseMock.get(CONTACT_ID)).thenReturn(existContact);
+        final Contact existContact = TestSetUpUtil
+                .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(existContact);
 
         Contact contact = ContactController.getInstance(databaseMock)
-                .get(CONTACT_ID);
+                .get(TestSetUpUtil.CONTACT_ID);
 
         Assertions.assertEquals(existContact, contact);
 
@@ -126,28 +126,126 @@ public class TestContactController {
     public void testGetContactWithContactNotExist() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
-        Mockito.when(databaseMock.get(CONTACT_ID)).thenReturn(null);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(null);
 
         final BadRequestException exception = Assertions
                 .assertThrows(BadRequestException.class, () -> {
-                    ContactController.getInstance(databaseMock).get(CONTACT_ID);
+                    ContactController.getInstance(databaseMock)
+                            .get(TestSetUpUtil.CONTACT_ID);
                 });
 
-        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NULL,
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
                 exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
+                exception.getErrorCode());
     }
 
-    private Contact createContact(final String lastName) {
-        final Address address = Address.builder().withStreet(CONTACT_STREET)
-                .withDistrict(CONTACT_DISTRICT).withCountry(CONTACT_COUNTRY)
-                .withCity(CONTACT_CITY).build();
+    /**
+     * test get contact with contact id is null.
+     */
+    @Test
+    public void testGetContactWithContactIdIsNull() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
 
-        final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.HOME,
-                CONTACT_PHONE_NUMBER);
+        final BadRequestException exception = Assertions
+                .assertThrows(BadRequestException.class, () -> {
+                    ContactController.getInstance(databaseMock).get(null);
+                });
 
-        return Contact.builder().withLastName(lastName)
-                .withFirstName(CONTACT_FIRST_NAME)
-                .withAddresses(Arrays.asList(address))
-                .withPhoneNumbers(Arrays.asList(phoneNumber)).build();
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_ID_IS_NULL,
+                exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_ID_MISSING,
+                exception.getErrorCode());
+    }
+
+    /**
+     * test delete contact.
+     */
+    @Test
+    public void testDeleteContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Mockito.doNothing().when(databaseMock).delete(TestSetUpUtil.CONTACT_ID);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(new Contact());
+
+        ContactController.getInstance(databaseMock)
+                .delete(TestSetUpUtil.CONTACT_ID);
+
+        Mockito.verify(databaseMock, Mockito.times(1))
+                .delete(TestSetUpUtil.CONTACT_ID);
+    }
+
+    /**
+     * test delete contact with contact not exist.
+     */
+    @Test
+    public void testDeleteContactWithContactNotExist() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(null);
+
+        final BadRequestException exception = Assertions
+                .assertThrows(BadRequestException.class, () -> {
+                    ContactController.getInstance(databaseMock)
+                            .delete(TestSetUpUtil.CONTACT_ID);
+                });
+
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
+                exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
+                exception.getErrorCode());
+
+    }
+
+    /**
+     * test delete contact with contact id is null.
+     */
+    @Test
+    public void testDeleteContactWithContactIdIsNull() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+
+        final BadRequestException exception = Assertions
+                .assertThrows(BadRequestException.class, () -> {
+                    ContactController.getInstance(databaseMock).delete(null);
+                });
+
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_ID_IS_NULL,
+                exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_ID_MISSING,
+                exception.getErrorCode());
+    }
+
+    /**
+     * test update contact.
+     */
+    @Test
+    public void testUpdateContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+
+        final Contact existContact = TestSetUpUtil
+                .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
+        final Contact updatedContact = TestSetUpUtil
+                .createContact(TestSetUpUtil.NEW_CONTACT_LAST_NAME);
+
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(existContact);
+        Mockito.when(
+                databaseMock.update(TestSetUpUtil.CONTACT_ID, updatedContact))
+                .thenReturn(updatedContact);
+
+        final Contact contact = ContactController.getInstance(databaseMock)
+                .update(TestSetUpUtil.CONTACT_ID, updatedContact);
+
+        Assertions.assertEquals(updatedContact, contact);
     }
 }
