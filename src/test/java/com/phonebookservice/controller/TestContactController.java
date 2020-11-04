@@ -9,10 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.phonebookservice.controller.ContactController;
+import com.phonebookservice.dispatcher.EnumQueryParams;
 import com.phonebookservice.exception.BadRequestException;
+import com.phonebookservice.exception.NotFoundException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.IDataAccessAdapter;
-import com.phonebookservice.util.EnumQueryParams;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
 import com.phonebookservice.util.QueryParam;
@@ -132,8 +133,8 @@ public class TestContactController {
         Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
                 .thenReturn(null);
 
-        final BadRequestException exception = Assertions
-                .assertThrows(BadRequestException.class, () -> {
+        final NotFoundException exception = Assertions
+                .assertThrows(NotFoundException.class, () -> {
                     ContactController.getInstance(databaseMock)
                             .get(TestSetUpUtil.CONTACT_ID);
                 });
@@ -193,8 +194,8 @@ public class TestContactController {
         Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
                 .thenReturn(null);
 
-        final BadRequestException exception = Assertions
-                .assertThrows(BadRequestException.class, () -> {
+        final NotFoundException exception = Assertions
+                .assertThrows(NotFoundException.class, () -> {
                     ContactController.getInstance(databaseMock)
                             .delete(TestSetUpUtil.CONTACT_ID);
                 });
@@ -253,15 +254,15 @@ public class TestContactController {
     }
 
     /**
-     * test list contact.
+     * test get all contacts.
      */
     @Test
-    public void testListContact() {
+    public void testGetAllContacts() {
         final IDataAccessAdapter databaseMock = Mockito
                 .mock(IDataAccessAdapter.class);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             ContactController.getInstance(databaseMock)
-                    .getList(new HashMap<EnumQueryParams, QueryParam>());
+                    .getAll(new HashMap<EnumQueryParams, QueryParam>());
         });
     }
 }

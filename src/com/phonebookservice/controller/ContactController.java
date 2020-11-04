@@ -3,10 +3,11 @@ package com.phonebookservice.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import com.phonebookservice.dispatcher.EnumQueryParams;
 import com.phonebookservice.exception.BadRequestException;
+import com.phonebookservice.exception.NotFoundException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.IDataAccessAdapter;
-import com.phonebookservice.util.EnumQueryParams;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
 import com.phonebookservice.util.QueryParam;
@@ -19,7 +20,6 @@ import com.phonebookservice.util.StringUtility;
  */
 public final class ContactController extends AbstractController<Contact> {
     private static ContactController singleton;
-    private static IDataAccessAdapter<Contact> database;
 
     /**
      * Initialization of contact controller.
@@ -33,7 +33,6 @@ public final class ContactController extends AbstractController<Contact> {
             throw new IllegalArgumentException(
                     ErrorMessages.ERROR_DATABASE_NOT_FOUND);
         }
-        this.database = super.getDatabase();
     }
 
     /**
@@ -61,7 +60,7 @@ public final class ContactController extends AbstractController<Contact> {
     @Override
     public Contact get(final Long contactId) {
         ContactController.checkContactId(contactId);
-        final Contact contact = database.get(contactId);
+        final Contact contact = getDatabase().get(contactId);
         ContactController.validateExisitingContact(contact);
         return contact;
     }
@@ -74,7 +73,7 @@ public final class ContactController extends AbstractController<Contact> {
     @Override
     public void create(final Contact contact) {
         ContactController.validateContact(contact);
-        database.create(contact);
+        getDatabase().create(contact);
     }
 
     /**
@@ -89,9 +88,9 @@ public final class ContactController extends AbstractController<Contact> {
     public Contact update(final Long contactId, final Contact contact) {
         ContactController.checkContactId(contactId);
         ContactController.validateContact(contact);
-        final Contact existedContact = database.get(contactId);
+        final Contact existedContact = getDatabase().get(contactId);
         ContactController.validateExisitingContact(existedContact);
-        return database.update(contactId, contact);
+        return getDatabase().update(contactId, contact);
     }
 
     /**
@@ -102,10 +101,9 @@ public final class ContactController extends AbstractController<Contact> {
     @Override
     public void delete(final Long contactId) {
         ContactController.checkContactId(contactId);
-        final Contact contact = database.get(contactId);
+        final Contact contact = getDatabase().get(contactId);
         ContactController.validateExisitingContact(contact);
-        database.delete(contactId);
-
+        getDatabase().delete(contactId);
     }
 
     /**
@@ -115,7 +113,7 @@ public final class ContactController extends AbstractController<Contact> {
      * @return list of contacts.
      */
     @Override
-    public List<Contact> getList(
+    public List<Contact> getAll(
             final HashMap<EnumQueryParams, QueryParam> paramValues) {
         throw new UnsupportedOperationException();
     }
@@ -134,7 +132,7 @@ public final class ContactController extends AbstractController<Contact> {
 
     private static void validateExisitingContact(final Contact contact) {
         if (contact == null) {
-            throw new BadRequestException(
+            throw new NotFoundException(
                     ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
                     ErrorCode.ERROR_CONTACT_NOT_FOUND);
         }

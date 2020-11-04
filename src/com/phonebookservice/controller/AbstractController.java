@@ -3,9 +3,9 @@ package com.phonebookservice.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import com.phonebookservice.dispatcher.EnumQueryParams;
 import com.phonebookservice.model.Model;
 import com.phonebookservice.server.IDataAccessAdapter;
-import com.phonebookservice.util.EnumQueryParams;
 import com.phonebookservice.util.QueryParam;
 
 /**
@@ -40,7 +40,7 @@ public abstract class AbstractController<T extends Model> {
      * @param paramValues the hashmap of query params.
      * @return list of models.
      */
-    protected abstract List<T> getList(
+    protected abstract List<T> getAll(
             HashMap<EnumQueryParams, QueryParam> paramValues);
 
     /**
@@ -72,7 +72,7 @@ public abstract class AbstractController<T extends Model> {
      *
      * @return database.
      */
-    protected IDataAccessAdapter getDatabase() {
+    protected IDataAccessAdapter<T> getDatabase() {
         return database;
     }
 }

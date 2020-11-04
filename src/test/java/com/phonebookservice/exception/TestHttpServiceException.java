@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.exception.InternalServerException;
+import com.phonebookservice.exception.NotFoundException;
 
 /**
  * @author marwa.saleh
@@ -16,6 +17,7 @@ public class TestHttpServiceException {
     private static final String TEST_INTERNAL_ERROR_MESSAGE = "Error found";
     private static final String TEST_INTERNAL_ERROR_CODE = "ERROR_FOUND";
     private static final int TEST_BAD_REQUEST_STATUS_CODE = 400;
+    private static final int TEST_NOT_FOUND_STATUS_CODE = 404;
     private static final int TEST_INTERNAL_SERVER_STATUS_CODE = 500;
 
     /**
@@ -31,6 +33,23 @@ public class TestHttpServiceException {
         Assertions.assertEquals(TEST_ERROR_CODE,
                 badRequestException.getErrorCode());
         Assertions.assertEquals(TEST_BAD_REQUEST_STATUS_CODE,
+                badRequestException.getStatusCode());
+        Assertions.assertTrue(badRequestException.isClientException());
+    }
+
+    /**
+     * test not found exception.
+     */
+    @Test
+    public void testNotFoundException() {
+        final NotFoundException badRequestException = new NotFoundException(
+                TEST_ERROR_MESSAGE, TEST_ERROR_CODE);
+
+        Assertions.assertEquals(TEST_ERROR_MESSAGE,
+                badRequestException.getMessage());
+        Assertions.assertEquals(TEST_ERROR_CODE,
+                badRequestException.getErrorCode());
+        Assertions.assertEquals(TEST_NOT_FOUND_STATUS_CODE,
                 badRequestException.getStatusCode());
         Assertions.assertTrue(badRequestException.isClientException());
     }

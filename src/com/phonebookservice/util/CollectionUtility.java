@@ -7,7 +7,13 @@ import java.util.Collection;
  *
  * @author Marwa Saleh
  */
-public abstract class CollectionUtility {
+public final class CollectionUtility {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private CollectionUtility() {
+    }
 
     /**
      * Checks whether a list is null or empty.

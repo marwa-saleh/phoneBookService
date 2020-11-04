@@ -5,7 +5,13 @@ package com.phonebookservice.util;
  *
  * @author Marwa Saleh
  */
-public abstract class StringUtility {
+public final class StringUtility {
+
+    /**
+     * Don't let anyone instantiate this class.
+     */
+    private StringUtility() {
+    }
 
     /**
      * Checks whether a string is null or empty.
