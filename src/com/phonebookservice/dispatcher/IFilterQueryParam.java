@@ -5,6 +5,6 @@ package com.phonebookservice.dispatcher;
  *
  * @author Marwa Saleh
  */
-public class FilterQueryParam implements QueryParam {
+public class IFilterQueryParam implements QueryParam {
 
 }
