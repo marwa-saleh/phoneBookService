@@ -90,7 +90,7 @@
     <module name="InvalidJavadocPosition"/>
     <module name="JavadocMethod"/>
     <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
+	<!-- <module name="JavadocVariable"/> -->
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod"/>
 
@@ -150,7 +150,7 @@
     <!-- See https://checkstyle.org/config_coding.html -->
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
-    <module name="HiddenField"/>
+	<!--  <module name="HiddenField"/> -->
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
     <module name="MagicNumber"/>
