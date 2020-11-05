@@ -3,10 +3,10 @@ package com.phonebookservice.controller;
 import java.util.HashMap;
 import java.util.List;
 
-import com.phonebookservice.dispatcher.EnumQueryParams;
+import com.phonebookservice.dispatcher.QueryParamType;
+import com.phonebookservice.dispatcher.QueryParam;
 import com.phonebookservice.model.Model;
 import com.phonebookservice.server.IDataAccessAdapter;
-import com.phonebookservice.util.QueryParam;
 
 /**
  * abstract controller.
@@ -41,7 +41,7 @@ public abstract class AbstractController<T extends Model> {
      * @return list of models.
      */
     protected abstract List<T> getAll(
-            HashMap<EnumQueryParams, QueryParam> paramValues);
+            HashMap<QueryParamType, QueryParam> paramValues);
 
     /**
      * create model.

@@ -3,14 +3,14 @@ package com.phonebookservice.controller;
 import java.util.HashMap;
 import java.util.List;
 
-import com.phonebookservice.dispatcher.EnumQueryParams;
+import com.phonebookservice.dispatcher.QueryParam;
+import com.phonebookservice.dispatcher.QueryParamType;
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.exception.NotFoundException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.IDataAccessAdapter;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
-import com.phonebookservice.util.QueryParam;
 import com.phonebookservice.util.StringUtility;
 
 /**
@@ -60,7 +60,7 @@ public final class ContactController extends AbstractController<Contact> {
     @Override
     public Contact get(final Long contactId) {
         ContactController.checkContactId(contactId);
-        final Contact contact = getDatabase().get(contactId);
+        final Contact contact = super.getDatabase().get(contactId);
         ContactController.validateExisitingContact(contact);
         return contact;
     }
@@ -73,7 +73,7 @@ public final class ContactController extends AbstractController<Contact> {
     @Override
     public void create(final Contact contact) {
         ContactController.validateContact(contact);
-        getDatabase().create(contact);
+        super.getDatabase().create(contact);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class ContactController extends AbstractController<Contact> {
         ContactController.validateContact(contact);
         final Contact existedContact = getDatabase().get(contactId);
         ContactController.validateExisitingContact(existedContact);
-        return getDatabase().update(contactId, contact);
+        return super.getDatabase().update(contactId, contact);
     }
 
     /**
@@ -103,7 +103,7 @@ public final class ContactController extends AbstractController<Contact> {
         ContactController.checkContactId(contactId);
         final Contact contact = getDatabase().get(contactId);
         ContactController.validateExisitingContact(contact);
-        getDatabase().delete(contactId);
+        super.getDatabase().delete(contactId);
     }
 
     /**
@@ -114,7 +114,7 @@ public final class ContactController extends AbstractController<Contact> {
      */
     @Override
     public List<Contact> getAll(
-            final HashMap<EnumQueryParams, QueryParam> paramValues) {
+            final HashMap<QueryParamType, QueryParam> paramValues) {
         throw new UnsupportedOperationException();
     }
 

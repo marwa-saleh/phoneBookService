@@ -5,6 +5,6 @@ package com.phonebookservice.dispatcher;
  *
  * @author Marwa Saleh
  */
-public enum EnumQueryParams {
+public enum QueryParamType {
     FILTERS, LIMIT, TOP;
 }

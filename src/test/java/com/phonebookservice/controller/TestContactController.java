@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.phonebookservice.controller.ContactController;
-import com.phonebookservice.dispatcher.EnumQueryParams;
+import com.phonebookservice.dispatcher.QueryParam;
+import com.phonebookservice.dispatcher.QueryParamType;
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.exception.NotFoundException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.IDataAccessAdapter;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
-import com.phonebookservice.util.QueryParam;
 
 import test.java.com.phonebookservice.util.TestSetUpUtil;
 
@@ -120,7 +120,6 @@ public class TestContactController {
                 .get(TestSetUpUtil.CONTACT_ID);
 
         Assertions.assertEquals(existContact, contact);
-
     }
 
     /**
@@ -205,7 +204,6 @@ public class TestContactController {
 
         Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
                 exception.getErrorCode());
-
     }
 
     /**
@@ -262,7 +260,7 @@ public class TestContactController {
                 .mock(IDataAccessAdapter.class);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             ContactController.getInstance(databaseMock)
-                    .getAll(new HashMap<EnumQueryParams, QueryParam>());
+                    .getAll(new HashMap<QueryParamType, QueryParam>());
         });
     }
 }
