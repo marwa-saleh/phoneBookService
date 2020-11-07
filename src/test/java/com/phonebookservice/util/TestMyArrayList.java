@@ -87,6 +87,17 @@ public class TestMyArrayList {
     }
 
     /**
+     * test not contains in list.
+     */
+    @Test
+    public void testNotContainsList() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertFalse(
+                stringList.contains(TestSetUpUtil.TEST_STRING_VALUE2));
+    }
+
+    /**
      * test is not empty list.
      */
     @Test
