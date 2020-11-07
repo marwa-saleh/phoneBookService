@@ -17,6 +17,14 @@ public abstract class TestSetUpUtil {
     public static final String CONTACT_DISTRICT = "Smouha";
     public static final Long CONTACT_ID = 123456L;
     public static final String NEW_CONTACT_LAST_NAME = "Ahmed";
+    public static final String TEST_STRING_VALUE1 = "value1";
+    public static final String TEST_STRING_VALUE2 = "value2";
+    public static final String TEST_STRING_VALUE3 = "value3";
+    public static final String TEST_STRING_VALUE4 = "value4";
+    public static final int TEST_ARRAY_SIZE_12 = 12;
+    public static final int DEFAULT_ARRAY_SIZE = 10;
+    public static final int TEST_ARRAY_SIZE_5 = 5;
+    public static final int TEST_ARRAY_SIZE_3 = 3;
 
     /**
      * create contact object.
