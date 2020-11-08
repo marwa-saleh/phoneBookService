@@ -26,7 +26,8 @@ public class MyArrayList<T> implements List<T> {
     public MyArrayList(final int size) {
         super();
         if (size < 0) {
-            throw new IllegalArgumentException("Capacity: " + size);
+            throw new IllegalArgumentException("Invalid size: " + size
+                    + ". The size should be positive number");
         }
         this.data = (T[]) new Object[size];
     }
@@ -40,7 +41,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean add(final T element) {
         if (this.index > this.data.length - 1) {
-            increaseSize();
+            this.increaseSize();
         }
 
         this.data[this.index] = element;
@@ -104,12 +105,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean contains(final Object element) {
-        for (int i = 0; i < this.index; i++) {
-            if (this.data[i].equals(element)) {
-                return true;
-            }
-        }
-        return false;
+        return this.lastIndexOf(element) != -1;
     }
 
     /**
@@ -120,7 +116,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public T get(final int index) {
-        checkIndex(index);
+        this.checkIndex(index);
         return this.data[index];
     }
 
@@ -133,9 +129,17 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int indexOf(final Object element) {
-        for (int i = 0; i < this.index; i++) {
-            if (this.data[i].equals(element)) {
-                return i;
+        if (element == null) {
+            for (int i = 0; i < this.index; i++) {
+                if (element == this.data[i]) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < this.index; i++) {
+                if (element.equals(this.data[i])) {
+                    return i;
+                }
             }
         }
         return -1;
@@ -148,9 +152,17 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int lastIndexOf(final Object element) {
-        for (int i = this.index - 1; i >= 0; i--) {
-            if (this.data[i].equals(element)) {
-                return i;
+        if (element == null) {
+            for (int i = this.index - 1; i >= 0; i--) {
+                if (element == this.data[i]) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = this.index - 1; i >= 0; i--) {
+                if (this.data[i].equals(element)) {
+                    return i;
+                }
             }
         }
         return -1;
@@ -176,7 +188,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public T set(final int index, final T element) {
-        checkIndex(index);
+        this.checkIndex(index);
         final T prevElment = get(index);
         this.data[index] = element;
         return prevElment;
@@ -187,9 +199,6 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int size() {
-        if (this.index > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
-        }
         return this.index;
     }
 
@@ -203,8 +212,13 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
-        if (fromIndex < 0 || toIndex > this.index || fromIndex > toIndex) {
+        if (fromIndex < 0 || toIndex > this.index) {
             throw new IndexOutOfBoundsException();
+        }
+
+        if (fromIndex > toIndex) {
+            throw new IllegalArgumentException(
+                    "fromIndex: " + fromIndex + " > toIndex: " + toIndex);
         }
 
         if (fromIndex == toIndex) {
@@ -214,8 +228,12 @@ public class MyArrayList<T> implements List<T> {
         final List<T> subList = new MyArrayList<T>();
 
         for (int i = 0; i < this.index; i++) {
-            if (fromIndex <= i && toIndex > i) {
+            if (i >= fromIndex && i < toIndex) {
                 subList.add(this.data[i]);
+            }
+
+            if (i > toIndex) {
+                break;
             }
         }
         return subList;
@@ -227,7 +245,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public T[] toArray() {
-        return Arrays.copyOf(this.data, this.index);
+        return copyArray(this.data, this.index);
     }
 
     /**
@@ -239,7 +257,7 @@ public class MyArrayList<T> implements List<T> {
     public <T> T[] toArray(final T[] array) {
 
         if (array.length <= this.index) {
-            return (T[]) Arrays.copyOf(this.data, this.index);
+            return (T[]) copyArray(this.data, this.index);
         }
 
         for (int i = 0; i < this.index; i++) {
@@ -336,5 +354,14 @@ public class MyArrayList<T> implements List<T> {
         if (i > this.index - 1 || i < 0) {
             throw new IndexOutOfBoundsException();
         }
+    }
+
+    private T[] copyArray(final T[] data, final int index) {
+        final T[] array = (T[]) new Object[index];
+
+        for (int i = 0; i < index; i++) {
+            array[i] = data[i];
+        }
+        return array;
     }
 }
