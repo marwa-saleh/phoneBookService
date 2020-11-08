@@ -24,6 +24,7 @@ public abstract class TestSetUpUtil {
     public static final int TEST_ARRAY_SIZE_12 = 12;
     public static final int DEFAULT_ARRAY_SIZE = 10;
     public static final int TEST_ARRAY_SIZE_5 = 5;
+    public static final int TEST_ARRAY_SIZE_4 = 4;
     public static final int TEST_ARRAY_SIZE_3 = 3;
 
     /**

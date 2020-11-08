@@ -57,7 +57,22 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public void add(final int index, final T element) {
-        throw new UnsupportedOperationException();
+        this.checkIndex(index);
+
+        if (index <= this.index) {
+            if (this.index > this.data.length - 1) {
+                this.increaseSize();
+            }
+
+            for (int i = this.index; i > index; i--) {
+                this.data[i] = this.data[i - 1];
+            }
+
+            this.data[index] = element;
+            this.index++;
+        } else {
+            this.add(element);
+        }
     }
 
     /**
@@ -94,6 +109,7 @@ public class MyArrayList<T> implements List<T> {
         for (int i = 0; i < this.index; i++) {
             this.data[i] = null;
         }
+
         this.index = 0;
     }
 
@@ -131,7 +147,7 @@ public class MyArrayList<T> implements List<T> {
     public int indexOf(final Object element) {
         if (element == null) {
             for (int i = 0; i < this.index; i++) {
-                if (element == this.data[i]) {
+                if (this.data[i] == null) {
                     return i;
                 }
             }
@@ -154,7 +170,7 @@ public class MyArrayList<T> implements List<T> {
     public int lastIndexOf(final Object element) {
         if (element == null) {
             for (int i = this.index - 1; i >= 0; i--) {
-                if (element == this.data[i]) {
+                if (this.data[i] == null) {
                     return i;
                 }
             }
@@ -245,7 +261,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public T[] toArray() {
-        return copyArray(this.data, this.index);
+        return this.copyArray(this.data, this.index);
     }
 
     /**
@@ -257,7 +273,7 @@ public class MyArrayList<T> implements List<T> {
     public <T> T[] toArray(final T[] array) {
 
         if (array.length <= this.index) {
-            return (T[]) copyArray(this.data, this.index);
+            return (T[]) this.copyArray(this.data, this.index);
         }
 
         for (int i = 0; i < this.index; i++) {
@@ -300,7 +316,24 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean remove(final Object element) {
-        throw new UnsupportedOperationException();
+
+        if (element == null) {
+            for (int i = 0; i < this.index; i++) {
+                if (this.data[i] == null) {
+                    this.shiftRemove(i);
+                    return true;
+                }
+            }
+        } else {
+            for (int i = 0; i < index; i++) {
+                if (element.equals(this.data[i])) {
+                    this.shiftRemove(i);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -310,7 +343,15 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public T remove(final int index) {
-        throw new UnsupportedOperationException();
+        this.checkIndex(index);
+        T object = null;
+
+        if (this.data[index] != null) {
+            object = this.data[index];
+            this.remove(object);
+        }
+
+        return object;
     }
 
     /**
@@ -364,4 +405,12 @@ public class MyArrayList<T> implements List<T> {
         }
         return array;
     }
+
+    private void shiftRemove(final int i) {
+        for (int j = i; j < this.index; j++) {
+            this.data[i] = this.data[i + 1];
+        }
+        this.index--;
+    }
+
 }
