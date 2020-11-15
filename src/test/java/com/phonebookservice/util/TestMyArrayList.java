@@ -152,21 +152,29 @@ public class TestMyArrayList {
      * test to array list.
      */
     @Test
-    public void testToArrayList() {
+    public void testToArrayListWithEqualSize() {
         final MyArrayList<String> stringList = new MyArrayList<String>();
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
-        final String[] arrayList = new String[TestSetUpUtil.TEST_ARRAY_SIZE_3];
+        final String[] arrayList = new String[1];
         arrayList[0] = TestSetUpUtil.TEST_STRING_VALUE2;
-        arrayList[1] = TestSetUpUtil.TEST_STRING_VALUE3;
-        arrayList[2] = TestSetUpUtil.TEST_STRING_VALUE4;
         final Object[] arrayResult = stringList.toArray(arrayList);
-        Assertions.assertEquals(TestSetUpUtil.TEST_ARRAY_SIZE_3,
-                arrayResult.length);
+        Assertions.assertEquals(1, arrayResult.length);
         Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
                 arrayResult[0]);
-        Assertions.assertNull(arrayResult[1]);
-        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE4,
-                arrayResult[2]);
+    }
+
+    /**
+     * test to array with list have smalller size than array.
+     */
+    @Test
+    public void testToArrayListWithListSizeSmaller() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        final String[] arrayList = new String[1];
+        arrayList[0] = TestSetUpUtil.TEST_STRING_VALUE2;
+        final Object[] arrayResult = stringList.toArray(arrayList);
+        Assertions.assertNotNull(arrayResult);
+        Assertions.assertNull(arrayResult[0]);
+
     }
 
     /**
@@ -177,7 +185,7 @@ public class TestMyArrayList {
         final MyArrayList<String> stringList = new MyArrayList<String>();
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
-        final String[] arrayList = new String[2];
+        final String[] arrayList = new String[1];
         arrayList[0] = TestSetUpUtil.TEST_STRING_VALUE2;
         final Object[] arrayResult = stringList.toArray(arrayList);
         Assertions.assertEquals(2, arrayResult.length);
@@ -232,6 +240,21 @@ public class TestMyArrayList {
 
         Assertions.assertEquals(TestSetUpUtil.TEST_ARRAY_SIZE_5,
                 stringList.lastIndexOf(TestSetUpUtil.TEST_STRING_VALUE2));
+    }
+
+    /**
+     * test last index of list.
+     */
+    @Test
+    public void testLastIndexOfNullElement() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(null);
+        stringList.add(null);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertEquals(2, stringList.lastIndexOf(null));
     }
 
     /**
@@ -368,5 +391,21 @@ public class TestMyArrayList {
         Assertions.assertNull(stringList.get(1));
         Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE2,
                 stringList.get(2));
+    }
+
+    /**
+     * test add by index after last one.
+     */
+    @Test
+    public void testAddByIndexAfterLastOne() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList.add(3, TestSetUpUtil.TEST_STRING_VALUE4);
+        Assertions.assertEquals(TestSetUpUtil.TEST_ARRAY_SIZE_4,
+                stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE4,
+                stringList.get(3));
     }
 }
