@@ -164,7 +164,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public int lastIndexOf(final Object element) {
         for (int i = this.currentIndex - 1; i >= 0; i--) {
-            if (equal(element, i)) {
+            if (checkIfEqual(element, i)) {
                 return i;
             }
         }
@@ -398,7 +398,7 @@ public class MyArrayList<T> implements List<T> {
         this.data[this.currentIndex] = null;
     }
 
-    private Boolean equal(final Object element, final int index) {
+    private boolean checkIfEqual(final Object element, final int index) {
 
         return element == this.data[index]
                 || this.data[index] != null && data[index].equals(element);
