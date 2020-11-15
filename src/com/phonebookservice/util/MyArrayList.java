@@ -44,8 +44,7 @@ public class MyArrayList<T> implements List<T> {
             this.increaseSize();
         }
 
-        this.data[this.currentIndex] = element;
-        this.currentIndex++;
+        this.data[this.currentIndex++] = element;
         return true;
     }
 
@@ -140,19 +139,12 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int indexOf(final Object element) {
-        if (element == null) {
-            for (int i = 0; i < this.currentIndex; i++) {
-                if (this.data[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = 0; i < this.currentIndex; i++) {
-                if (element.equals(this.data[i])) {
-                    return i;
-                }
+        for (int i = 0; i < this.currentIndex; i++) {
+            if (this.checkIfEqual(element, i)) {
+                return i;
             }
         }
+
         return -1;
     }
 
@@ -164,7 +156,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public int lastIndexOf(final Object element) {
         for (int i = this.currentIndex - 1; i >= 0; i--) {
-            if (checkIfEqual(element, i)) {
+            if (this.checkIfEqual(element, i)) {
                 return i;
             }
         }
@@ -299,20 +291,10 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean remove(final Object element) {
-
-        if (element == null) {
-            for (int i = 0; i < this.currentIndex; i++) {
-                if (this.data[i] == null) {
-                    this.shiftRemove(i);
-                    return true;
-                }
-            }
-        } else {
-            for (int i = 0; i < currentIndex; i++) {
-                if (element.equals(this.data[i])) {
-                    this.shiftRemove(i);
-                    return true;
-                }
+        for (int i = 0; i < currentIndex; i++) {
+            if (this.checkIfEqual(element, i)) {
+                this.shiftRemove(i);
+                return true;
             }
         }
 
@@ -394,10 +376,16 @@ public class MyArrayList<T> implements List<T> {
         for (int j = i; j < this.currentIndex; j++) {
             this.data[i] = this.data[i + 1];
         }
-        this.currentIndex--;
-        this.data[this.currentIndex] = null;
+        this.data[--this.currentIndex] = null;
     }
 
+    /**
+     * check if element exist in data array with specified index.
+     *
+     * @param element the element
+     * @param index   the index
+     * @return true if found element in data array, else false.
+     */
     private boolean checkIfEqual(final Object element, final int index) {
 
         return element == this.data[index]

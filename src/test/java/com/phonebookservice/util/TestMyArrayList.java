@@ -225,6 +225,19 @@ public class TestMyArrayList {
     }
 
     /**
+     * test index of null value in list.
+     */
+    @Test
+    public void testIndexOfNullValue() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(null);
+        stringList.add(null);
+
+        Assertions.assertEquals(1, stringList.indexOf(null));
+    }
+
+    /**
      * test last index of list.
      */
     @Test
@@ -298,6 +311,50 @@ public class TestMyArrayList {
                 result.get(1));
         Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE2,
                 result.get(2));
+    }
+
+    /**
+     * test sub list with toIndex out of bound.
+     */
+    @Test
+    public void testSubListWithToIndexOutOfBound() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.subList(1, 4);
+        });
+    }
+
+    /**
+     * test sub list with fromIndex greater than toIndex.
+     */
+    @Test
+    public void testSubListWithFromIndexGreaterThanToIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            stringList.subList(3, 1);
+        });
+    }
+
+    /**
+     * test sub list with fromIndex equal than toIndex.
+     */
+    @Test
+    public void testSubListWithFromIndexEqualThanToIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        final List<String> result = stringList.subList(1, 1);
+        Assertions.assertEquals(0, result.size());
     }
 
     /**
