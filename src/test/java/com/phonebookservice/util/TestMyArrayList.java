@@ -42,6 +42,28 @@ public class TestMyArrayList {
     }
 
     /**
+     * test add larger size list by index.
+     */
+    @Test
+    public void testAddLargerSizeListByIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>(10);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(10, TestSetUpUtil.TEST_STRING_VALUE2);
+        Assertions.assertEquals(TestSetUpUtil.TEST_ARRAY_SIZE_12,
+                stringList.size());
+    }
+
+    /**
      * test get in list.
      */
     @Test
