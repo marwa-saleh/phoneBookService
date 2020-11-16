@@ -514,6 +514,51 @@ public class TestMyArrayList {
     }
 
     /**
+     * test add out of bound value by index.
+     */
+    @Test
+    public void testAddOutOfBoundValueByIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.add(6, TestSetUpUtil.TEST_STRING_VALUE3);
+        });
+    }
+
+    /**
+     * test get by negative index.
+     */
+    @Test
+    public void testGetByNegativeIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.get(-1);
+        });
+    }
+
+    /**
+     * test get by out of bound index.
+     */
+    @Test
+    public void testGetByOutOfBoundIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.get(6);
+        });
+    }
+
+    /**
      * test add by index after last one.
      */
     @Test
