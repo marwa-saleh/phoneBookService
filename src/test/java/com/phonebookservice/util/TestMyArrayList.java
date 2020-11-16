@@ -10,6 +10,16 @@ import com.phonebookservice.util.MyArrayList;
 public class TestMyArrayList {
 
     /**
+     * test initialize list with negative value.
+     */
+    @Test
+    public void testInitalizeListWithNegativeValue() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new MyArrayList<String>(-5);
+        });
+    }
+
+    /**
      * test add in list.
      */
     @Test
@@ -57,8 +67,8 @@ public class TestMyArrayList {
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
-        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
-        stringList.add(10, TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(10, TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
         Assertions.assertEquals(TestSetUpUtil.TEST_ARRAY_SIZE_12,
                 stringList.size());
     }
@@ -380,6 +390,22 @@ public class TestMyArrayList {
     }
 
     /**
+     * test sub list with negative fromIndex.
+     */
+    @Test
+    public void testSubListWithNegativeFromIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.subList(-1, 1);
+        });
+
+    }
+
+    /**
      * test remove object.
      */
     @Test
@@ -470,6 +496,21 @@ public class TestMyArrayList {
         Assertions.assertNull(stringList.get(1));
         Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE2,
                 stringList.get(2));
+    }
+
+    /**
+     * test add negative value by index.
+     */
+    @Test
+    public void testAddNegativeValueByIndex() {
+        final MyArrayList<String> stringList = new MyArrayList<String>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.add(-1, null);
+        });
     }
 
     /**
