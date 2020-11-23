@@ -79,9 +79,10 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean addAll(final Collection<? extends T> collection) {
         this.checkCollectionNotNull(collection);
+        final Iterator<? extends T> iterator = collection.iterator();
 
-        for (T value : collection) {
-            this.add(value);
+        while (iterator.hasNext()) {
+            this.add((T) iterator.next());
         }
 
         return collection.size() != 0;
@@ -99,10 +100,11 @@ public class MyArrayList<T> implements List<T> {
     public boolean addAll(final int index,
             final Collection<? extends T> collection) {
         this.checkCollectionNotNull(collection);
+        final Iterator<? extends T> iterator = collection.iterator();
         int startIndex = index;
 
-        for (T value : collection) {
-            this.add(startIndex, value);
+        while (iterator.hasNext()) {
+            this.add(startIndex, (T) iterator.next());
             startIndex++;
         }
 
