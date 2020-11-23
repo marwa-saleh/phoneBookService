@@ -78,7 +78,13 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean addAll(final Collection<? extends T> collection) {
-        throw new UnsupportedOperationException();
+        this.checkCollectionNotNull(collection);
+
+        for (T value : collection) {
+            this.add(value);
+        }
+
+        return collection.size() != 0;
     }
 
     /**
@@ -92,7 +98,16 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean addAll(final int index,
             final Collection<? extends T> collection) {
-        throw new UnsupportedOperationException();
+        this.checkCollectionNotNull(collection);
+
+        int startIndex = index;
+
+        for (T value : collection) {
+            this.add(startIndex, value);
+            startIndex++;
+        }
+
+        return collection.size() != 0;
     }
 
     /**
@@ -232,6 +247,7 @@ public class MyArrayList<T> implements List<T> {
     /**
      * Returns an array containing all of the elements in this list in proper
      * sequence (from first to last element).
+     *
      */
     @Override
     public T[] toArray() {
@@ -242,6 +258,9 @@ public class MyArrayList<T> implements List<T> {
      * Returns an array containing all of the elements in this list in proper
      * sequence (from first to last element); the runtime type of the returned
      * array is that of the specified array.
+     *
+     * @param array the array.
+     * @return an array containing the elements of the list
      */
     @Override
     public <T> T[] toArray(final T[] array) {
@@ -288,6 +307,8 @@ public class MyArrayList<T> implements List<T> {
     /**
      * Removes the first occurrence of the specified element from this list, if
      * it is present (optional operation).
+     *
+     * @param element the object.
      */
     @Override
     public boolean remove(final Object element) {
@@ -317,19 +338,23 @@ public class MyArrayList<T> implements List<T> {
     /**
      * Removes from this list all of its elements that are contained in the
      * specified collection (optional operation).
+     *
+     * @param collection the collection.
      */
     @Override
     public boolean removeAll(final Collection<?> collection) {
-        throw new UnsupportedOperationException();
+        return this.removeCollection(collection, true);
     }
 
     /**
      * Retains only the elements in this list that are contained in the
      * specified collection (optional operation).
+     *
+     * @param collection the collection.
      */
     @Override
     public boolean retainAll(final Collection<?> collection) {
-        throw new UnsupportedOperationException();
+        return this.removeCollection(collection, false);
     }
 
     /**
@@ -340,7 +365,19 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean containsAll(final Collection<?> collection) {
-        throw new UnsupportedOperationException();
+        this.checkCollectionNotNull(collection);
+
+        final Object[] x = collection.toArray();
+        final int collectionSize = x.length;
+        boolean changed = true;
+
+        for (int i = 0; i < collectionSize; i++) {
+            if (!this.contains(x[i])) {
+                changed = false;
+            }
+        }
+
+        return changed;
     }
 
     /**
@@ -374,7 +411,7 @@ public class MyArrayList<T> implements List<T> {
 
     private void shiftRemove(final int i) {
         for (int j = i; j < this.currentIndex; j++) {
-            this.data[i] = this.data[i + 1];
+            this.data[j] = this.data[j + 1];
         }
         this.data[--this.currentIndex] = null;
     }
@@ -391,5 +428,27 @@ public class MyArrayList<T> implements List<T> {
         return element == this.data[index]
                 || this.data[index] != null && data[index].equals(element);
 
+    }
+
+    private void checkCollectionNotNull(final Collection<?> collection) {
+        if (collection == null) {
+            throw new NullPointerException();
+        }
+    }
+
+    private boolean removeCollection(final Collection<?> collection,
+            final boolean remove) {
+        this.checkCollectionNotNull(collection);
+        boolean changed = false;
+
+        for (int i = 0; i < currentIndex; i++) {
+            if (collection.contains(this.data[i]) == remove) {
+                this.remove(this.data[i]);
+                i--;
+                changed = true;
+            }
+        }
+
+        return changed;
     }
 }
