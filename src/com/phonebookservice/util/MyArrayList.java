@@ -99,7 +99,6 @@ public class MyArrayList<T> implements List<T> {
     public boolean addAll(final int index,
             final Collection<? extends T> collection) {
         this.checkCollectionNotNull(collection);
-
         int startIndex = index;
 
         for (T value : collection) {
@@ -366,13 +365,10 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean containsAll(final Collection<?> collection) {
         this.checkCollectionNotNull(collection);
-
-        final Object[] x = collection.toArray();
-        final int collectionSize = x.length;
         boolean changed = true;
 
-        for (int i = 0; i < collectionSize; i++) {
-            if (!this.contains(x[i])) {
+        for (Object object : collection) {
+            if (!this.contains(object)) {
                 changed = false;
             }
         }
