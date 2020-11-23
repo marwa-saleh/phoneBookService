@@ -368,9 +368,10 @@ public class MyArrayList<T> implements List<T> {
     public boolean containsAll(final Collection<?> collection) {
         this.checkCollectionNotNull(collection);
         boolean changed = true;
+        final Iterator<?> iterator = collection.iterator();
 
-        for (Object object : collection) {
-            if (!this.contains(object)) {
+        while (iterator.hasNext()) {
+            if (!this.contains(iterator.next())) {
                 changed = false;
             }
         }
@@ -430,7 +431,7 @@ public class MyArrayList<T> implements List<T> {
 
     private void checkCollectionNotNull(final Collection<?> collection) {
         if (collection == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("collection is null");
         }
     }
 
