@@ -57,6 +57,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public void add(final int index, final T element) {
         this.checkIndexToAdd(index);
+
         if (this.currentIndex > this.data.length - 1) {
             this.increaseSize();
         }
@@ -82,7 +83,7 @@ public class MyArrayList<T> implements List<T> {
         final Iterator<? extends T> iterator = collection.iterator();
 
         while (iterator.hasNext()) {
-            this.add((T) iterator.next());
+            this.add(iterator.next());
         }
 
         return collection.size() != 0;
@@ -100,14 +101,26 @@ public class MyArrayList<T> implements List<T> {
     public boolean addAll(final int index,
             final Collection<? extends T> collection) {
         this.checkCollectionNotNull(collection);
-        final Iterator<? extends T> iterator = collection.iterator();
+        this.checkIndexToAdd(index);
         int startIndex = index;
+        int collectionSize = collection.size();
+
+        while (this.currentIndex + collectionSize > this.data.length - 1) {
+            this.increaseSize();
+        }
+
+        for (int j = index; j < this.currentIndex; j++) {
+            this.data[j + collectionSize] = data[j];
+        }
+
+        final Iterator<? extends T> iterator = collection.iterator();
 
         while (iterator.hasNext()) {
-            this.add(startIndex, (T) iterator.next());
+            this.data[startIndex] = iterator.next();
             startIndex++;
         }
 
+        this.currentIndex += collectionSize;
         return collection.size() != 0;
     }
 
@@ -367,16 +380,15 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean containsAll(final Collection<?> collection) {
         this.checkCollectionNotNull(collection);
-        boolean changed = true;
         final Iterator<?> iterator = collection.iterator();
 
         while (iterator.hasNext()) {
             if (!this.contains(iterator.next())) {
-                changed = false;
+                return false;
             }
         }
 
-        return changed;
+        return true;
     }
 
     /**
@@ -442,7 +454,7 @@ public class MyArrayList<T> implements List<T> {
 
         for (int i = 0; i < currentIndex; i++) {
             if (collection.contains(this.data[i]) == remove) {
-                this.remove(this.data[i]);
+                this.shiftRemove(i);
                 i--;
                 changed = true;
             }
