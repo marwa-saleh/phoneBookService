@@ -322,7 +322,7 @@ public class MyArrayList<T> implements List<T> {
         }
 
         private void checkForNextIterator() {
-            if (expectedCount != MyArrayList.this.currentIndex) {
+            if (this.expectedCount != MyArrayList.this.currentIndex) {
                 throw new ConcurrentModificationException();
             }
 
