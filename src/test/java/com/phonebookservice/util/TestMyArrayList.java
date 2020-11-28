@@ -1,6 +1,7 @@
 package test.java.com.phonebookservice.util;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -1191,10 +1192,27 @@ public class TestMyArrayList {
      */
     @Test
     public void testNextIteratorNoElementException() {
-        final MyArrayList<String> stringList2 = new MyArrayList<>();
-        final Iterator<String> iterator = stringList2.iterator();
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.remove(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Iterator<String> iterator = stringList.iterator();
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             iterator.next();
         });
     }
+
+    /**
+     * test next iterator concurrent modification exception.
+     */
+    @Test
+    public void testNextIteratorConcurrentModificationException() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Iterator<String> iterator = stringList.iterator();
+        stringList.remove(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(ConcurrentModificationException.class, () -> {
+            iterator.next();
+        });
+    }
+
 }

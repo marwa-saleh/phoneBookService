@@ -2,6 +2,7 @@ package com.phonebookservice.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -299,25 +300,35 @@ public class MyArrayList<T> implements List<T> {
 
     private class MyIterator<T> implements Iterator<T> {
         private int index;
-        private int removeIndex = -1;
+        private int expectedCount;
+        private int removeIndex;
 
         MyIterator() {
             this.index = 0;
+            this.expectedCount = MyArrayList.this.currentIndex;
+            this.removeIndex = -1;
         }
 
         @Override
         public boolean hasNext() {
-            return this.index < currentIndex;
+            return this.index < MyArrayList.this.currentIndex;
         }
 
         @Override
         public T next() {
+            this.checkForNextIterator();
+            this.removeIndex++;
+            return (T) data[this.index++];
+        }
+
+        private void checkForNextIterator() {
+            if (expectedCount != MyArrayList.this.currentIndex) {
+                throw new ConcurrentModificationException();
+            }
+
             if (this.index >= MyArrayList.this.currentIndex) {
                 throw new NoSuchElementException();
             }
-
-            this.removeIndex++;
-            return (T) data[this.index++];
         }
     }
 
