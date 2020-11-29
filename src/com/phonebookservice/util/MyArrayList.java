@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 public class MyArrayList<T> implements List<T> {
     private static final int DEFAULT_CAPACITY = 10;
     private T[] data;
-    private int currentIndex = 0;
+    private int size = 0;
 
     /**
      * Initialization of array.
@@ -42,11 +42,11 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean add(final T element) {
-        if (this.currentIndex > this.data.length - 1) {
-            this.increaseSize(2);
+        if (this.size > this.data.length - 1) {
+            this.doubleArraySizeBy(2);
         }
 
-        this.data[this.currentIndex++] = element;
+        this.data[this.size++] = element;
         return true;
     }
 
@@ -60,16 +60,16 @@ public class MyArrayList<T> implements List<T> {
     public void add(final int index, final T element) {
         this.checkIndexToAdd(index);
 
-        if (this.currentIndex > this.data.length - 1) {
-            this.increaseSize(2);
+        if (this.size > this.data.length - 1) {
+            this.doubleArraySizeBy(2);
         }
 
-        for (int i = this.currentIndex; i > index; i--) {
+        for (int i = this.size; i > index; i--) {
             this.data[i] = this.data[i - 1];
         }
 
         this.data[index] = element;
-        this.currentIndex++;
+        this.size++;
     }
 
     /**
@@ -105,9 +105,9 @@ public class MyArrayList<T> implements List<T> {
         this.checkCollectionNotNull(collection);
         this.checkIndexToAdd(index);
         int collectionSize = collection.size();
-        this.increaseSizeInternal(this.currentIndex + collectionSize);
+        this.increaseSizeIfAny(this.size + collectionSize);
 
-        for (int j = this.currentIndex - 1; j >= index; j--) {
+        for (int j = this.size - 1; j >= index; j--) {
             this.data[j + collectionSize] = data[j];
         }
 
@@ -118,7 +118,7 @@ public class MyArrayList<T> implements List<T> {
             this.data[startIndex++] = iterator.next();
         }
 
-        this.currentIndex += collectionSize;
+        this.size += collectionSize;
         return collection.size() != 0;
     }
 
@@ -127,11 +127,11 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public void clear() {
-        for (int i = 0; i < this.currentIndex; i++) {
+        for (int i = 0; i < this.size; i++) {
             this.data[i] = null;
         }
 
-        this.currentIndex = 0;
+        this.size = 0;
     }
 
     /**
@@ -166,7 +166,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int indexOf(final Object element) {
-        for (int i = 0; i < this.currentIndex; i++) {
+        for (int i = 0; i < this.size; i++) {
             if (this.checkIfEqual(element, i)) {
                 return i;
             }
@@ -182,7 +182,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int lastIndexOf(final Object element) {
-        for (int i = this.currentIndex - 1; i >= 0; i--) {
+        for (int i = this.size - 1; i >= 0; i--) {
             if (this.checkIfEqual(element, i)) {
                 return i;
             }
@@ -198,7 +198,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean isEmpty() {
-        return this.currentIndex == 0;
+        return this.size == 0;
     }
 
     /**
@@ -222,7 +222,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int size() {
-        return this.currentIndex;
+        return this.size;
     }
 
     /**
@@ -235,7 +235,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
-        if (fromIndex < 0 || toIndex > this.currentIndex) {
+        if (fromIndex < 0 || toIndex > this.size) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -263,7 +263,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public T[] toArray() {
-        return this.copyArray(this.data, this.currentIndex);
+        return this.copyArray(this.data, this.size);
     }
 
     /**
@@ -277,13 +277,13 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public <T> T[] toArray(final T[] array) {
 
-        if (array.length < this.currentIndex) {
-            return (T[]) this.copyArray(this.data, this.currentIndex);
-        } else if (array.length > this.currentIndex) {
-            array[this.currentIndex] = null;
+        if (array.length < this.size) {
+            return (T[]) this.copyArray(this.data, this.size);
+        } else if (array.length > this.size) {
+            array[this.size] = null;
         }
 
-        for (int i = 0; i < this.currentIndex; i++) {
+        for (int i = 0; i < this.size; i++) {
             array[i] = (T) this.data[i];
         }
 
@@ -301,32 +301,29 @@ public class MyArrayList<T> implements List<T> {
     private class MyIterator<T> implements Iterator<T> {
         private int index;
         private int expectedCount;
-        private int removeIndex;
 
         MyIterator() {
             this.index = 0;
-            this.expectedCount = MyArrayList.this.currentIndex;
-            this.removeIndex = -1;
+            this.expectedCount = MyArrayList.this.size;
         }
 
         @Override
         public boolean hasNext() {
-            return this.index < MyArrayList.this.currentIndex;
+            return this.index < MyArrayList.this.size;
         }
 
         @Override
         public T next() {
             this.checkForNextIterator();
-            this.removeIndex++;
             return (T) data[this.index++];
         }
 
         private void checkForNextIterator() {
-            if (this.expectedCount != MyArrayList.this.currentIndex) {
+            if (this.expectedCount != MyArrayList.this.size) {
                 throw new ConcurrentModificationException();
             }
 
-            if (this.index >= MyArrayList.this.currentIndex) {
+            if (this.index >= MyArrayList.this.size) {
                 throw new NoSuchElementException();
             }
         }
@@ -358,7 +355,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean remove(final Object element) {
-        for (int i = 0; i < currentIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (this.checkIfEqual(element, i)) {
                 this.shiftRemove(i);
                 return true;
@@ -428,7 +425,7 @@ public class MyArrayList<T> implements List<T> {
      *
      * @param numberOfNewSize the number of new size.
      */
-    private void increaseSize(final int numberOfNewSize) {
+    private void doubleArraySizeBy(final int numberOfNewSize) {
         if (numberOfNewSize > 0) {
             int newSize = this.data.length * numberOfNewSize;
             this.data = Arrays.copyOf(this.data, newSize);
@@ -436,13 +433,13 @@ public class MyArrayList<T> implements List<T> {
     }
 
     private void checkIndexToAdd(final int i) {
-        if (i > this.currentIndex || i < 0) {
+        if (i > this.size || i < 0) {
             throw new IndexOutOfBoundsException();
         }
     }
 
     private void checkIndex(final int i) {
-        if (i >= this.currentIndex || i < 0) {
+        if (i >= this.size || i < 0) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -458,10 +455,10 @@ public class MyArrayList<T> implements List<T> {
     }
 
     private void shiftRemove(final int i) {
-        for (int j = i; j < this.currentIndex; j++) {
+        for (int j = i; j < this.size; j++) {
             this.data[j] = this.data[j + 1];
         }
-        this.data[--this.currentIndex] = null;
+        this.data[--this.size] = null;
     }
 
     /**
@@ -484,9 +481,9 @@ public class MyArrayList<T> implements List<T> {
         }
     }
 
-    private void increaseSizeInternal(final int minSize) {
+    private void increaseSizeIfAny(final int minSize) {
         int newIncreaseOfSize = minSize / (this.data.length - 1);
-        this.increaseSize(newIncreaseOfSize + 1);
+        this.doubleArraySizeBy(newIncreaseOfSize + 1);
     }
 
     private boolean removeCollection(final Collection<?> collection,
@@ -495,13 +492,12 @@ public class MyArrayList<T> implements List<T> {
         int changed = 0;
         int index = 0;
 
-        for (int i = 0; i < currentIndex; i++) {
+        for (int i = 0; i < size; i++) {
             boolean contains = false;
             boolean retain = true;
-            final Iterator<?> iterator = collection.iterator();
 
-            while (iterator.hasNext()) {
-                if ((iterator.next() == this.data[i])) {
+            for (Object object : collection) {
+                if ((object == this.data[i])) {
                     contains = true;
                     retain = false;
                 }
@@ -517,7 +513,7 @@ public class MyArrayList<T> implements List<T> {
             }
         }
 
-        this.currentIndex -= changed;
+        this.size -= changed;
         return changed != 0;
     }
 }
