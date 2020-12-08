@@ -1,6 +1,14 @@
 package test.java.com.phonebookservice.util;
 
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -414,10 +422,17 @@ public class TestMyArrayList {
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
         stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE4);
 
         Assertions.assertTrue(
                 stringList.remove(TestSetUpUtil.TEST_STRING_VALUE2));
-        Assertions.assertEquals(2, stringList.size());
+        Assertions.assertEquals(3, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                stringList.get(0));
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE3,
+                stringList.get(1));
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE4,
+                stringList.get(2));
     }
 
     /**
@@ -573,4 +588,631 @@ public class TestMyArrayList {
         Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE4,
                 stringList.get(3));
     }
+
+    /**
+     * test add all with list.
+     */
+    @Test
+    public void testAddAllWithList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.addAll(stringList2));
+        Assertions.assertEquals(3, stringList.size());
+    }
+
+    /**
+     * test add all with big list.
+     */
+    @Test
+    public void testAddAllWithBigList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        Assertions.assertTrue(stringList.addAll(stringList2));
+        Assertions.assertEquals(13, stringList.size());
+    }
+
+    /**
+     * test add all with set.
+     */
+    @Test
+    public void testAddAllWithSet() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Set<String> stringList2 = new HashSet<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.addAll(stringList2));
+        Assertions.assertEquals(3, stringList.size());
+    }
+
+    /**
+     * test add all with linked list.
+     */
+    @Test
+    public void testAddAllWithQueue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Queue<String> stringList2 = new LinkedList<String>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.addAll(stringList2));
+        Assertions.assertEquals(3, stringList.size());
+    }
+
+    /**
+     * test add all with null list.
+     */
+    @Test
+    public void testAddAllWithNullList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList.addAll(null);
+        });
+    }
+
+    /**
+     * test add all with empty data list.
+     */
+    @Test
+    public void testAddAllWithEmptyDataList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.addAll(stringList2));
+        Assertions.assertEquals(2, stringList.size());
+    }
+
+    /**
+     * test add all with empty list.
+     */
+    @Test
+    public void testAddAllWithEmptyList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertFalse(stringList.addAll(new ArrayList<>()));
+        Assertions.assertEquals(1, stringList.size());
+    }
+
+    /**
+     * test add all with null value.
+     */
+    @Test
+    public void testAddAllWithNullValue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(null);
+        Assertions.assertTrue(stringList.addAll(stringList2));
+        Assertions.assertEquals(3, stringList.size());
+    }
+
+    /**
+     * test add all with index with list.
+     */
+    @Test
+    public void testAddAllWithIndexWithList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.addAll(0, stringList2));
+        Assertions.assertEquals(3, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE2,
+                stringList.get(0));
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                stringList.get(2));
+    }
+
+    /**
+     * test add all with index with big list.
+     */
+    @Test
+    public void testAddAllWithIndexWithBigList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        stringList2.add("5");
+        stringList2.add("6");
+        stringList2.add("7");
+        stringList2.add("8");
+        stringList2.add("9");
+        stringList2.add("10");
+        stringList2.add("11");
+        stringList2.add("12");
+        stringList2.add("13");
+        Assertions.assertTrue(stringList.addAll(1, stringList2));
+        Assertions.assertEquals(13, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE3,
+                stringList.get(1));
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE2,
+                stringList.get(12));
+    }
+
+    /**
+     * test add all with index with big collection.
+     */
+    @Test
+    public void testAddAllWithIndexWithVeryBigCollection() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        stringList.add("5");
+
+        final ArrayList<String> collectionList = new ArrayList<>();
+
+        for (int i = 0; i < 100; i++) {
+            collectionList.add("Test" + String.valueOf(i));
+        }
+
+        Assertions.assertTrue(stringList.addAll(0, collectionList));
+        Assertions.assertEquals(105, stringList.size());
+    }
+
+    /**
+     * test add all with index with big list.
+     */
+    @Test
+    public void testAddAllWithIndexWithVeryBigList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+
+        for (int i = 0; i < 100; i++) {
+            stringList.add("Test" + String.valueOf(i));
+        }
+
+        final ArrayList<String> collectionList = new ArrayList<>();
+        collectionList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        collectionList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        collectionList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        collectionList.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        collectionList.add("value 5");
+
+        Assertions.assertTrue(stringList.addAll(0, collectionList));
+        Assertions.assertEquals(105, stringList.size());
+    }
+
+    /**
+     * test add all with index with null list.
+     */
+    @Test
+    public void testAddAllWithIndexWithNullList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList.addAll(0, null);
+        });
+    }
+
+    /**
+     * test add all with index out of bound.
+     */
+    @Test
+    public void testAddAllWithIndexOutOfBound() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+            stringList.addAll(1, stringList2);
+        });
+    }
+
+    /**
+     * test add all with index with empty list.
+     */
+    @Test
+    public void testAddAllWithIndexWithEmptyList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertFalse(stringList.addAll(0, new ArrayList<>()));
+        Assertions.assertEquals(1, stringList.size());
+    }
+
+    /**
+     * test add all with index with null list.
+     */
+    @Test
+    public void testAddAllWithIndexWithNullValue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(null);
+        Assertions.assertTrue(stringList.addAll(1, stringList2));
+        Assertions.assertEquals(3, stringList.size());
+    }
+
+    /**
+     * test remove all with different lists.
+     */
+    @Test
+    public void testRemoveAllWithDifferentLists() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertFalse(stringList.removeAll(stringList2));
+        Assertions.assertEquals(1, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                stringList.get(0));
+    }
+
+    /**
+     * test remove all with list.
+     */
+    @Test
+    public void testRemoveAllWithList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.removeAll(stringList2));
+        Assertions.assertEquals(2, stringList.size());
+    }
+
+    /**
+     * test remove all with similar list.
+     */
+    @Test
+    public void testRemoveAllWithSimilarList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.removeAll(stringList2));
+        Assertions.assertEquals(0, stringList.size());
+    }
+
+    /**
+     * test remove all with null value.
+     */
+    @Test
+    public void testRemoveAllWithNullValue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(null);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(null);
+        Assertions.assertTrue(stringList.removeAll(stringList2));
+        Assertions.assertEquals(1, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                stringList.get(0));
+    }
+
+    /**
+     * test remove all with null list.
+     */
+    @Test
+    public void testRemoveAllWithNullList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList.removeAll(null);
+        });
+    }
+
+    /**
+     * test remove all with empty list.
+     */
+    @Test
+    public void testRemoveAllWithEmptyList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertFalse(stringList.removeAll(new ArrayList<>()));
+        Assertions.assertEquals(1, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                stringList.get(0));
+    }
+
+    /**
+     * test retain all with different lists.
+     */
+    @Test
+    public void testRetainAllWithDifferentLists() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.retainAll(stringList2));
+        Assertions.assertEquals(1, stringList.size());
+    }
+
+    /**
+     * test retain all with list.
+     */
+    @Test
+    public void testRetainAllWithList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertFalse(stringList.retainAll(stringList2));
+        Assertions.assertEquals(1, stringList.size());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                stringList.get(0));
+    }
+
+    /**
+     * test retain all with similar list.
+     */
+    @Test
+    public void testRetainAllWithSimilarList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertFalse(stringList.retainAll(stringList2));
+        Assertions.assertEquals(2, stringList.size());
+    }
+
+    /**
+     * test retain all with null value.
+     */
+    @Test
+    public void testRetainAllWithNullValue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(null);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(null);
+        Assertions.assertTrue(stringList.retainAll(stringList2));
+        Assertions.assertEquals(1, stringList.size());
+        Assertions.assertEquals(null, stringList.get(0));
+    }
+
+    /**
+     * test retain all with null list.
+     */
+    @Test
+    public void testRetainAllWithNullList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList.retainAll(null);
+        });
+    }
+
+    /**
+     * test retain all with empty list.
+     */
+    @Test
+    public void testRetainAllWithEmptyList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertTrue(stringList.retainAll(new ArrayList<>()));
+        Assertions.assertEquals(0, stringList.size());
+    }
+
+    /**
+     * test contains all with equal null value.
+     */
+    @Test
+    public void testContainsAllWithEqualNullValue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(null);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(null);
+        Assertions.assertTrue(stringList.containsAll(stringList2));
+    }
+
+    /**
+     * test contains all with same values.
+     */
+    @Test
+    public void testContainsAllWithSameValues() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertTrue(stringList.containsAll(stringList2));
+    }
+
+    /**
+     * test contains all with equal values.
+     */
+    @Test
+    public void testContainsAllWithEqualValues() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        Assertions.assertTrue(stringList.containsAll(stringList2));
+    }
+
+    /**
+     * test contains all with different values.
+     */
+    @Test
+    public void testContainsAllWithDifferentValues() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        Assertions.assertFalse(stringList.containsAll(stringList2));
+    }
+
+    /**
+     * test contains all with not equal value.
+     */
+    @Test
+    public void testContainsAllWithNotEqualValue() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE4);
+        Assertions.assertFalse(stringList.containsAll(stringList2));
+    }
+
+    /**
+     * test contains all check with empty list.
+     */
+    @Test
+    public void testContainsAllCheckWithEmptyList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertTrue(stringList.containsAll(new ArrayList<>()));
+    }
+
+    /**
+     * test contains all with empty list.
+     */
+    @Test
+    public void testContainsAllWithEmptyList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE3);
+        Assertions.assertFalse(stringList.containsAll(stringList2));
+    }
+
+    /**
+     * test contains all check with null list.
+     */
+    @Test
+    public void testContainsAllCheckWithNullList() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList.containsAll(null);
+        });
+    }
+
+    /**
+     * test contains all with null list.
+     */
+    @Test
+    public void testContainsAllWithNullList() {
+        final MyArrayList<String> stringList = null;
+        final ArrayList<String> stringList2 = new ArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList.containsAll(stringList2);
+        });
+    }
+
+    /**
+     * test has next iterator.
+     */
+    @Test
+    public void testHasNextIterator() {
+        final MyArrayList<String> stringList2 = new MyArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Iterator<String> iterator = stringList2.iterator();
+        Assertions.assertTrue(iterator.hasNext());
+    }
+
+    /**
+     * test has next iterator with empty list.
+     */
+    @Test
+    public void testHasNextIteratorWithEmptyList() {
+        final MyArrayList<String> stringList2 = new MyArrayList<>();
+        final Iterator<String> iterator = stringList2.iterator();
+        Assertions.assertFalse(iterator.hasNext());
+    }
+
+    /**
+     * test iterator.
+     */
+    @Test
+    public void testIterator() {
+        final MyArrayList<String> stringList2 = null;
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stringList2.iterator();
+        });
+    }
+
+    /**
+     * test next iterator.
+     */
+    @Test
+    public void testNextIterator() {
+        final MyArrayList<String> stringList2 = new MyArrayList<>();
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList2.add(TestSetUpUtil.TEST_STRING_VALUE2);
+        final Iterator<String> iterator = stringList2.iterator();
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE1,
+                iterator.next());
+        Assertions.assertEquals(TestSetUpUtil.TEST_STRING_VALUE2,
+                iterator.next());
+        Assertions.assertFalse(iterator.hasNext());
+
+    }
+
+    /**
+     * test next iterator no element exception.
+     */
+    @Test
+    public void testNextIteratorNoElementException() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        stringList.remove(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Iterator<String> iterator = stringList.iterator();
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            iterator.next();
+        });
+    }
+
+    /**
+     * test next iterator concurrent modification exception.
+     */
+    @Test
+    public void testNextIteratorConcurrentModificationException() {
+        final MyArrayList<String> stringList = new MyArrayList<>();
+        stringList.add(TestSetUpUtil.TEST_STRING_VALUE1);
+        final Iterator<String> iterator = stringList.iterator();
+        stringList.remove(TestSetUpUtil.TEST_STRING_VALUE1);
+        Assertions.assertThrows(ConcurrentModificationException.class, () -> {
+            iterator.next();
+        });
+    }
+
 }

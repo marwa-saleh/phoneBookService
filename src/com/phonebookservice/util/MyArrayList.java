@@ -2,14 +2,16 @@ package com.phonebookservice.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class MyArrayList<T> implements List<T> {
     private static final int DEFAULT_CAPACITY = 10;
     private T[] data;
-    private int currentIndex = 0;
+    private int size = 0;
 
     /**
      * Initialization of array.
@@ -40,11 +42,11 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean add(final T element) {
-        if (this.currentIndex > this.data.length - 1) {
-            this.increaseSize();
+        if (this.size > this.data.length - 1) {
+            this.doubleArraySizeBy(2);
         }
 
-        this.data[this.currentIndex++] = element;
+        this.data[this.size++] = element;
         return true;
     }
 
@@ -57,16 +59,17 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public void add(final int index, final T element) {
         this.checkIndexToAdd(index);
-        if (this.currentIndex > this.data.length - 1) {
-            this.increaseSize();
+
+        if (this.size > this.data.length - 1) {
+            this.doubleArraySizeBy(2);
         }
 
-        for (int i = this.currentIndex; i > index; i--) {
+        for (int i = this.size; i > index; i--) {
             this.data[i] = this.data[i - 1];
         }
 
         this.data[index] = element;
-        this.currentIndex++;
+        this.size++;
     }
 
     /**
@@ -78,7 +81,14 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean addAll(final Collection<? extends T> collection) {
-        throw new UnsupportedOperationException();
+        this.checkCollectionNotNull(collection);
+        final Iterator<? extends T> iterator = collection.iterator();
+
+        while (iterator.hasNext()) {
+            this.add(iterator.next());
+        }
+
+        return collection.size() != 0;
     }
 
     /**
@@ -92,7 +102,24 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean addAll(final int index,
             final Collection<? extends T> collection) {
-        throw new UnsupportedOperationException();
+        this.checkCollectionNotNull(collection);
+        this.checkIndexToAdd(index);
+        int collectionSize = collection.size();
+        this.increaseSizeIfAny(this.size + collectionSize);
+
+        for (int j = this.size - 1; j >= index; j--) {
+            this.data[j + collectionSize] = data[j];
+        }
+
+        final Iterator<? extends T> iterator = collection.iterator();
+        int startIndex = index;
+
+        while (iterator.hasNext()) {
+            this.data[startIndex++] = iterator.next();
+        }
+
+        this.size += collectionSize;
+        return collection.size() != 0;
     }
 
     /**
@@ -100,11 +127,11 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public void clear() {
-        for (int i = 0; i < this.currentIndex; i++) {
+        for (int i = 0; i < this.size; i++) {
             this.data[i] = null;
         }
 
-        this.currentIndex = 0;
+        this.size = 0;
     }
 
     /**
@@ -139,7 +166,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int indexOf(final Object element) {
-        for (int i = 0; i < this.currentIndex; i++) {
+        for (int i = 0; i < this.size; i++) {
             if (this.checkIfEqual(element, i)) {
                 return i;
             }
@@ -155,7 +182,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int lastIndexOf(final Object element) {
-        for (int i = this.currentIndex - 1; i >= 0; i--) {
+        for (int i = this.size - 1; i >= 0; i--) {
             if (this.checkIfEqual(element, i)) {
                 return i;
             }
@@ -171,7 +198,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean isEmpty() {
-        return this.currentIndex == 0;
+        return this.size == 0;
     }
 
     /**
@@ -195,7 +222,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public int size() {
-        return this.currentIndex;
+        return this.size;
     }
 
     /**
@@ -208,7 +235,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
-        if (fromIndex < 0 || toIndex > this.currentIndex) {
+        if (fromIndex < 0 || toIndex > this.size) {
             throw new IndexOutOfBoundsException();
         }
 
@@ -232,27 +259,31 @@ public class MyArrayList<T> implements List<T> {
     /**
      * Returns an array containing all of the elements in this list in proper
      * sequence (from first to last element).
+     *
      */
     @Override
     public T[] toArray() {
-        return this.copyArray(this.data, this.currentIndex);
+        return this.copyArray(this.data, this.size);
     }
 
     /**
      * Returns an array containing all of the elements in this list in proper
      * sequence (from first to last element); the runtime type of the returned
      * array is that of the specified array.
+     *
+     * @param array the array.
+     * @return an array containing the elements of the list
      */
     @Override
     public <T> T[] toArray(final T[] array) {
 
-        if (array.length < this.currentIndex) {
-            return (T[]) this.copyArray(this.data, this.currentIndex);
-        } else if (array.length > this.currentIndex) {
-            array[this.currentIndex] = null;
+        if (array.length < this.size) {
+            return (T[]) this.copyArray(this.data, this.size);
+        } else if (array.length > this.size) {
+            array[this.size] = null;
         }
 
-        for (int i = 0; i < this.currentIndex; i++) {
+        for (int i = 0; i < this.size; i++) {
             array[i] = (T) this.data[i];
         }
 
@@ -264,7 +295,38 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new MyIterator<T>();
+    }
+
+    private class MyIterator<T> implements Iterator<T> {
+        private int index;
+        private int expectedCount;
+
+        MyIterator() {
+            this.index = 0;
+            this.expectedCount = MyArrayList.this.size;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.index < MyArrayList.this.size;
+        }
+
+        @Override
+        public T next() {
+            this.checkForNextIterator();
+            return (T) data[this.index++];
+        }
+
+        private void checkForNextIterator() {
+            if (this.expectedCount != MyArrayList.this.size) {
+                throw new ConcurrentModificationException();
+            }
+
+            if (this.index >= MyArrayList.this.size) {
+                throw new NoSuchElementException();
+            }
+        }
     }
 
     /**
@@ -288,10 +350,12 @@ public class MyArrayList<T> implements List<T> {
     /**
      * Removes the first occurrence of the specified element from this list, if
      * it is present (optional operation).
+     *
+     * @param element the object.
      */
     @Override
     public boolean remove(final Object element) {
-        for (int i = 0; i < currentIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (this.checkIfEqual(element, i)) {
                 this.shiftRemove(i);
                 return true;
@@ -317,19 +381,23 @@ public class MyArrayList<T> implements List<T> {
     /**
      * Removes from this list all of its elements that are contained in the
      * specified collection (optional operation).
+     *
+     * @param collection the collection.
      */
     @Override
     public boolean removeAll(final Collection<?> collection) {
-        throw new UnsupportedOperationException();
+        return this.removeCollection(collection, true);
     }
 
     /**
      * Retains only the elements in this list that are contained in the
      * specified collection (optional operation).
+     *
+     * @param collection the collection.
      */
     @Override
     public boolean retainAll(final Collection<?> collection) {
-        throw new UnsupportedOperationException();
+        return this.removeCollection(collection, false);
     }
 
     /**
@@ -340,25 +408,38 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean containsAll(final Collection<?> collection) {
-        throw new UnsupportedOperationException();
+        this.checkCollectionNotNull(collection);
+        final Iterator<?> iterator = collection.iterator();
+
+        while (iterator.hasNext()) {
+            if (!this.contains(iterator.next())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
      * increase the size of data[].
+     *
+     * @param numberOfNewSize the number of new size.
      */
-    private void increaseSize() {
-        int newSize = this.data.length * 2;
-        this.data = Arrays.copyOf(this.data, newSize);
+    private void doubleArraySizeBy(final int numberOfNewSize) {
+        if (numberOfNewSize > 0) {
+            int newSize = this.data.length * numberOfNewSize;
+            this.data = Arrays.copyOf(this.data, newSize);
+        }
     }
 
     private void checkIndexToAdd(final int i) {
-        if (i > this.currentIndex || i < 0) {
+        if (i > this.size || i < 0) {
             throw new IndexOutOfBoundsException();
         }
     }
 
     private void checkIndex(final int i) {
-        if (i >= this.currentIndex || i < 0) {
+        if (i >= this.size || i < 0) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -369,14 +450,15 @@ public class MyArrayList<T> implements List<T> {
         for (int i = 0; i < index; i++) {
             array[i] = data[i];
         }
+
         return array;
     }
 
     private void shiftRemove(final int i) {
-        for (int j = i; j < this.currentIndex; j++) {
-            this.data[i] = this.data[i + 1];
+        for (int j = i; j < this.size; j++) {
+            this.data[j] = this.data[j + 1];
         }
-        this.data[--this.currentIndex] = null;
+        this.data[--this.size] = null;
     }
 
     /**
@@ -391,5 +473,47 @@ public class MyArrayList<T> implements List<T> {
         return element == this.data[index]
                 || this.data[index] != null && data[index].equals(element);
 
+    }
+
+    private void checkCollectionNotNull(final Collection<?> collection) {
+        if (collection == null) {
+            throw new NullPointerException("collection is null");
+        }
+    }
+
+    private void increaseSizeIfAny(final int minSize) {
+        int newIncreaseOfSize = minSize / (this.data.length - 1);
+        this.doubleArraySizeBy(newIncreaseOfSize + 1);
+    }
+
+    private boolean removeCollection(final Collection<?> collection,
+            final boolean remove) {
+        this.checkCollectionNotNull(collection);
+        int changed = 0;
+        int index = 0;
+
+        for (int i = 0; i < size; i++) {
+            boolean contains = false;
+            boolean retain = true;
+
+            for (Object object : collection) {
+                if ((object == this.data[i])) {
+                    contains = true;
+                    retain = false;
+                }
+            }
+
+            if ((remove && contains) || (!remove && retain)) {
+                changed++;
+                this.data[i] = null;
+            } else {
+                T value = this.data[i];
+                this.data[i] = null;
+                this.data[index++] = value;
+            }
+        }
+
+        this.size -= changed;
+        return changed != 0;
     }
 }
