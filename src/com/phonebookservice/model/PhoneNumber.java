@@ -24,4 +24,13 @@ public class PhoneNumber {
         this.number = number;
     }
 
+    /**
+     * Get phone number.
+     *
+     * @return number.
+     */
+    public final String getNumber() {
+        return number;
+    }
+
 }

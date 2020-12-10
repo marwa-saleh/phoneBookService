@@ -35,6 +35,17 @@ public class MyArrayList<T> implements List<T> {
     }
 
     /**
+     * Initialization of array.
+     *
+     * @param collection the collection.
+     */
+    public MyArrayList(final Collection<? extends T> collection) {
+        this.data = (T[]) new Object[collection.size()];
+        this.addAll(collection);
+        size = this.data.length;
+    }
+
+    /**
      * Appends the element to the end of this list.
      *
      * @param element the element.

@@ -36,4 +36,10 @@ public interface IDataAccessAdapter<T extends Model> {
      * @param modelId the model id.
      */
     void delete(Long modelId);
+
+    /**
+     * save models.
+     */
+    void save();
+
 }
