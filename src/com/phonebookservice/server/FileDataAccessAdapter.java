@@ -20,7 +20,9 @@ import com.phonebookservice.util.MyArrayList;
  *
  * @author Marwa Saleh
  */
-public class FileDataAccessAdapter implements IDataAccessAdapter<Contact> {
+public final class FileDataAccessAdapter
+        implements IDataAccessAdapter<Contact> {
+    private static FileDataAccessAdapter singleton;
     private static final String FILE_NAME = "D:\\phoneBookService\\src\\com\\"
             + "phonebookservice\\server\\FileDatabaseClient";
     private static final String ENCODING = "UTF-8";
@@ -31,8 +33,21 @@ public class FileDataAccessAdapter implements IDataAccessAdapter<Contact> {
     /**
      * Initialization of file data access adapter.
      */
-    public FileDataAccessAdapter() {
+    private FileDataAccessAdapter() {
         load();
+    }
+
+    /**
+     * Get instance of file data access adapter.
+     *
+     * @return file data access adapter.
+     */
+    public static FileDataAccessAdapter getInstance() {
+        if (singleton == null) {
+            singleton = new FileDataAccessAdapter();
+        }
+
+        return singleton;
     }
 
     /**

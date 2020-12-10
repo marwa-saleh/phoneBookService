@@ -17,7 +17,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithCreateContact() {
-        final IDataAccessAdapter databaseMock = new FileDataAccessAdapter();
+        final IDataAccessAdapter databaseMock = FileDataAccessAdapter
+                .getInstance();
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             databaseMock.create(new Contact());
         });
@@ -28,7 +29,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithDeleteContact() {
-        final IDataAccessAdapter databaseMock = new FileDataAccessAdapter();
+        final IDataAccessAdapter databaseMock = FileDataAccessAdapter
+                .getInstance();
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             databaseMock.delete(CONTACT_ID);
         });
@@ -39,7 +41,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithUpdateContact() {
-        final IDataAccessAdapter databaseMock = new FileDataAccessAdapter();
+        final IDataAccessAdapter databaseMock = FileDataAccessAdapter
+                .getInstance();
         final Contact contact = TestSetUpUtil
                 .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
