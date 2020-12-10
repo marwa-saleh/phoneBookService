@@ -29,8 +29,8 @@ public class PhoneNumber {
      *
      * @return number.
      */
-    public final String getNumber() {
-        return number;
+    public String getNumber() {
+        return this.number;
     }
 
 }

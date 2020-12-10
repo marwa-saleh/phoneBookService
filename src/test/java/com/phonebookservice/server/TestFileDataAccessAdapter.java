@@ -24,17 +24,6 @@ public class TestFileDataAccessAdapter {
     }
 
     /**
-     * test file data access adapter with get contact.
-     */
-    @Test
-    public void testFileDataAccessAdapterWithGetContact() {
-        final IDataAccessAdapter databaseMock = new FileDataAccessAdapter();
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            databaseMock.get(CONTACT_ID);
-        });
-    }
-
-    /**
      * test file data access adapter with delete contact.
      */
     @Test
