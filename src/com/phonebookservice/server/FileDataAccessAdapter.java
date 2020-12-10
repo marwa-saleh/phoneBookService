@@ -29,7 +29,7 @@ public class FileDataAccessAdapter implements IDataAccessAdapter<Contact> {
     private BiMap<String, Contact> myContactMap = HashBiMap.create();
 
     /**
-     * file data access adapter constructor.
+     * Initialization of file data access adapter.
      */
     public FileDataAccessAdapter() {
         load();
@@ -91,6 +91,7 @@ public class FileDataAccessAdapter implements IDataAccessAdapter<Contact> {
      */
     @Override
     public void save() {
+        // TODO to be done every time duration
         try {
             final Writer fileWriter = new FileWriter(FILE_NAME, false);
 
