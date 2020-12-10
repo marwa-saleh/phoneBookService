@@ -134,7 +134,8 @@ public final class FileDataAccessAdapter
             final List<String> lines = FileUtils.readLines(file, ENCODING);
 
             for (String line : lines) {
-                final String[] splitLine = line.split(",");
+                final String[] splitLine = line
+                        .split(ContactConverter.SPLITTER);
                 final String id = splitLine[0];
                 final Contact contact = ContactConverter
                         .mapStringToContact(splitLine);

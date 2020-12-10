@@ -9,6 +9,7 @@ import com.phonebookservice.model.PhoneNumber;
 import com.phonebookservice.model.PhoneNumber.PhoneLabel;
 
 public final class ContactConverter {
+    public static final String SPLITTER = ",";
 
     private ContactConverter() {
 
@@ -45,16 +46,16 @@ public final class ContactConverter {
     public static String mapContactToString(
             final BiMap<String, Contact> myContactMap, final Contact contact) {
         return new StringBuilder(myContactMap.inverse().get(contact))
-                .append(",").append(contact.getLastName()).append(",")
-                .append(contact.getFirstName()).append(",")
+                .append(SPLITTER).append(contact.getLastName()).append(SPLITTER)
+                .append(contact.getFirstName()).append(SPLITTER)
                 .append(!contact.getAddresses().isEmpty()
                         ? contact.getAddresses().get(0).getStreet()
                         : "")
-                .append(",")
+                .append(SPLITTER)
                 .append(!contact.getAddresses().isEmpty()
                         ? contact.getAddresses().get(0).getCity()
                         : "")
-                .append(",")
+                .append(SPLITTER)
                 .append(!contact.getPhoneNumbers().isEmpty()
                         ? contact.getPhoneNumbers().get(0).getNumber()
                         : "")
