@@ -25,14 +25,17 @@ public final class ContactConverter {
      * @return contact.
      */
     public static Contact convertStringToContact(final String[] splitLine) {
-        final Address address = Address.builder().withStreet(splitLine[3])
-                .withCity(splitLine[4]).build();
+
+        final Address address = Address.builder()
+                .withStreet(splitLine[ContactColumns.STREET.getKey()])
+                .withCity(splitLine[ContactColumns.CITY.getKey()]).build();
 
         final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.MOBILE,
-                splitLine[5]);
+                splitLine[ContactColumns.PHONE_NUMBER.getKey()]);
 
-        return Contact.builder().withLastName(splitLine[1])
-                .withFirstName(splitLine[2])
+        return Contact.builder()
+                .withLastName(splitLine[ContactColumns.LAST_NAME.getKey()])
+                .withFirstName(splitLine[ContactColumns.FIRST_NAME.getKey()])
                 .withAddresses(Arrays.asList(address))
                 .withPhoneNumbers(Arrays.asList(phoneNumber)).build();
     }

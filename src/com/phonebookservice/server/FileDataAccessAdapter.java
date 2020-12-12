@@ -21,7 +21,7 @@ public final class FileDataAccessAdapter
     private FileDataAccessAdapter() {
         this.parser = new FileParser(new MyArrayList<Contact>(),
                 new HashMap<>());
-        load();
+        this.parser.readContact();
     }
 
     /**
@@ -94,13 +94,5 @@ public final class FileDataAccessAdapter
     public void save() {
         // TODO to be done every time duration
         this.parser.writeContact();
-    }
-
-    /**
-     * load contacts.
-     *
-     */
-    private void load() {
-        this.parser.readContact();
     }
 }

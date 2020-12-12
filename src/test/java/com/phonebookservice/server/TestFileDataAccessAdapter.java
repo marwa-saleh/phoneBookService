@@ -3,6 +3,7 @@ package test.java.com.phonebookservice.server;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.phonebookservice.controller.ContactController;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.FileDataAccessAdapter;
 import com.phonebookservice.server.IDataAccessAdapter;
@@ -22,6 +23,17 @@ public class TestFileDataAccessAdapter {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             databaseMock.create(new Contact());
         });
+    }
+
+    /**
+     * test file data access adapter with get contact.
+     */
+    @Test
+    public void testFileDataAccessAdapterWithGetContact() {
+        FileDataAccessAdapter adapter = FileDataAccessAdapter.getInstance();
+        Contact contact = ContactController.getInstance(adapter)
+                .get(TestSetUpUtil.CONTACT_ID);
+        Assertions.assertNotNull(contact);
     }
 
     /**
