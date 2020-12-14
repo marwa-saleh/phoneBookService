@@ -42,7 +42,7 @@ public class MyArrayList<T> implements List<T> {
     public MyArrayList(final Collection<? extends T> collection) {
         this.data = (T[]) new Object[collection.size()];
         this.addAll(collection);
-        size = this.data.length;
+        this.size = this.data.length;
     }
 
     /**
