@@ -90,6 +90,7 @@ public class FileParser implements ContactParser {
                 for (Contact contact : this.myContactList) {
                     fileWriter.write(ContactConverter.convertContactToString(
                             this.myContactMap, contact));
+                    fileWriter.write(System.getProperty("line.separator"));
                 }
             }
         } catch (IOException e) {

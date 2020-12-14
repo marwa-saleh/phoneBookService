@@ -25,7 +25,6 @@ public final class ContactConverter {
      * @return contact.
      */
     public static Contact convertStringToContact(final String[] splitLine) {
-
         final Address address = Address.builder()
                 .withStreet(splitLine[ContactColumns.STREET.getKey()])
                 .withCity(splitLine[ContactColumns.CITY.getKey()]).build();
