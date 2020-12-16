@@ -25,7 +25,6 @@ public class ContactsFileParser implements IContactsParser {
      * @param fileName the file name.
      */
     public ContactsFileParser(final String fileName) {
-        super();
         this.fileName = fileName;
     }
 
@@ -59,12 +58,11 @@ public class ContactsFileParser implements IContactsParser {
         try {
             fileWriter = new FileWriter(this.fileName, false);
 
-            if (CollectionUtility.isNullOrEmptyList(contacts)
-                    || !(contacts instanceof List<?>)) {
+            if (CollectionUtility.isNullOrEmptyList(contacts)) {
                 return;
             }
 
-            for (Contact contact : (List<Contact>) contacts) {
+            for (Contact contact : contacts) {
                 fileWriter.write(
                         ContactConverter.convertContactToString(contact));
                 fileWriter.write(System.getProperty("line.separator"));

@@ -11,7 +11,7 @@ public final class ContactsDatabase {
     private static ContactsDatabase singleton;
     private final ContactsFileParser parser;
     private final Collection<Contact> contactList;
-    private final Map<String, Contact> idTocontactMap;
+    private final Map<String, Contact> idToContactMap;
 
     /**
      * Contacts database constructor.
@@ -20,9 +20,9 @@ public final class ContactsDatabase {
      */
     private ContactsDatabase(final String fileName) {
         this.contactList = new MyArrayList<Contact>();
-        this.idTocontactMap = new HashMap<>();
+        this.idToContactMap = new HashMap<>();
         this.parser = new ContactsFileParser(fileName);
-        readContacts();
+        this.readContacts();
     }
 
     /**
@@ -40,11 +40,11 @@ public final class ContactsDatabase {
     }
 
     private void readContacts() {
-        final Collection<Contact> contacts = parser.readContacts();
+        final Collection<Contact> contacts = this.parser.readContacts();
         this.contactList.addAll(contacts);
 
         for (Contact contact : contacts) {
-            this.idTocontactMap.put(contact.getId(), contact);
+            this.idToContactMap.put(contact.getId(), contact);
         }
     }
 
@@ -55,7 +55,7 @@ public final class ContactsDatabase {
      * @return contact.
      */
     public Contact get(final Long contactId) {
-        return this.idTocontactMap.get(contactId.toString());
+        return this.idToContactMap.get(contactId.toString());
     }
 
     /**

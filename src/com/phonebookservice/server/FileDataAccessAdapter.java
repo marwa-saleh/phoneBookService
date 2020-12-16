@@ -18,7 +18,7 @@ public final class FileDataAccessAdapter
         implements IDataAccessAdapter<Contact> {
 
     private static FileDataAccessAdapter singleton;
-    private final ContactsDatabase db;
+    private final ContactsDatabase contactsDb;
 
     /**
      * Initialization of file data access adapter.
@@ -34,7 +34,7 @@ public final class FileDataAccessAdapter
 
         // to-do: To be added in startup
         Config.getInstance();
-        this.db = ContactsDatabase
+        this.contactsDb = ContactsDatabase
                 .getInstance(Config.get(ConfigKey.FILE_PATH.getKey()));
     }
 
@@ -65,7 +65,7 @@ public final class FileDataAccessAdapter
             return null;
         }
 
-        return this.db.get(contactId);
+        return this.contactsDb.get(contactId);
     }
 
     /**
@@ -107,6 +107,6 @@ public final class FileDataAccessAdapter
      */
     @Override
     public void save() {
-        this.db.save();
+        this.contactsDb.save();
     }
 }
