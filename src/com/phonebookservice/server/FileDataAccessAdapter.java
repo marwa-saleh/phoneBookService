@@ -1,9 +1,9 @@
 package com.phonebookservice.server;
 
-import java.util.HashMap;
-
+import com.phonebookservice.config.Config;
+import com.phonebookservice.config.Config.ConfigKey;
+import com.phonebookservice.database.ContactsDatabase;
 import com.phonebookservice.model.Contact;
-import com.phonebookservice.util.MyArrayList;
 
 /**
  * file data access adapter.
@@ -12,16 +12,17 @@ import com.phonebookservice.util.MyArrayList;
  */
 public final class FileDataAccessAdapter
         implements IDataAccessAdapter<Contact> {
+
     private static FileDataAccessAdapter singleton;
-    private FileParser parser = null;
+    private final ContactsDatabase db;
 
     /**
      * Initialization of file data access adapter.
      */
     private FileDataAccessAdapter() {
-        this.parser = new FileParser(new MyArrayList<Contact>(),
-                new HashMap<>());
-        this.parser.readContact();
+        Config.getInstance();
+        this.db = ContactsDatabase
+                .getInstance(Config.get(ConfigKey.FILE_PATH.getKey()));
     }
 
     /**
@@ -50,7 +51,7 @@ public final class FileDataAccessAdapter
             return null;
         }
 
-        return this.parser.getMyContactMap().get(contactId.toString());
+        return this.db.get(contactId);
     }
 
     /**
@@ -60,7 +61,7 @@ public final class FileDataAccessAdapter
      */
     @Override
     public void create(final Contact contact) {
-        throw new UnsupportedOperationException();
+        this.db.create(contact);
     }
 
     /**
@@ -92,7 +93,6 @@ public final class FileDataAccessAdapter
      */
     @Override
     public void save() {
-        // TODO to be done every time duration
-        this.parser.writeContact();
+        this.db.save();
     }
 }

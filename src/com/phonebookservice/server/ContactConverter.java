@@ -1,8 +1,6 @@
 package com.phonebookservice.server;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.phonebookservice.model.Address;
 import com.phonebookservice.model.Contact;
@@ -32,7 +30,7 @@ public final class ContactConverter {
         final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.MOBILE,
                 splitLine[ContactColumns.PHONE_NUMBER.getKey()]);
 
-        return Contact.builder()
+        return Contact.builder().withId(splitLine[ContactColumns.ID.getKey()])
                 .withLastName(splitLine[ContactColumns.LAST_NAME.getKey()])
                 .withFirstName(splitLine[ContactColumns.FIRST_NAME.getKey()])
                 .withAddresses(Arrays.asList(address))
@@ -42,38 +40,32 @@ public final class ContactConverter {
     /**
      * map contact to string.
      *
-     * @param myContactMap the map.
-     * @param contact      the contact.
+     * @param contact the contact.
      *
      * @return string.
      */
-    public static String convertContactToString(
-            final Map<String, Contact> myContactMap, final Contact contact) {
+    public static String convertContactToString(final Contact contact) {
+        final String street = CollectionUtility
+                .isNotNullOrEmptyList(contact.getAddresses())
+                        ? contact.getAddresses().get(0).getStreet()
+                        : "";
 
-        for (Entry<String, Contact> entry : myContactMap.entrySet()) {
-            if (entry.getValue().equals(contact)) {
-                final String street = CollectionUtility
-                        .isNotNullOrEmptyList(contact.getAddresses())
-                                ? contact.getAddresses().get(0).getStreet()
-                                : "";
+        final String city = CollectionUtility
+                .isNotNullOrEmptyList(contact.getAddresses())
+                        ? contact.getAddresses().get(0).getCity()
+                        : "";
 
-                final String city = CollectionUtility
-                        .isNotNullOrEmptyList(contact.getAddresses())
-                                ? contact.getAddresses().get(0).getCity()
-                                : "";
+        final String number = CollectionUtility
+                .isNotNullOrEmptyList(contact.getPhoneNumbers())
+                        ? contact.getPhoneNumbers().get(0).getNumber()
+                        : "";
+        return new StringBuilder(contact.getId())
+                .append(ContactConverter.SPLITTER).append(contact.getLastName())
+                .append(ContactConverter.SPLITTER)
+                .append(contact.getFirstName())
+                .append(ContactConverter.SPLITTER).append(street)
+                .append(ContactConverter.SPLITTER).append(city)
+                .append(ContactConverter.SPLITTER).append(number).toString();
 
-                final String number = CollectionUtility
-                        .isNotNullOrEmptyList(contact.getPhoneNumbers())
-                                ? contact.getPhoneNumbers().get(0).getNumber()
-                                : "";
-                return new StringBuilder(entry.getKey()).append(SPLITTER)
-                        .append(contact.getLastName()).append(SPLITTER)
-                        .append(contact.getFirstName()).append(SPLITTER)
-                        .append(street).append(SPLITTER).append(city)
-                        .append(SPLITTER).append(number).toString();
-            }
-        }
-
-        return null;
     }
 }

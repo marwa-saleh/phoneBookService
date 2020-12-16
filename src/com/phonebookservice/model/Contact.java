@@ -10,6 +10,7 @@ import com.phonebookservice.model.builder.ContactBuilder;
  * @author Marwa Saleh
  */
 public class Contact implements Model {
+    private String id;
     private String firstName;
     private String lastName;
     private List<Address> addresses;
@@ -23,12 +24,30 @@ public class Contact implements Model {
     }
 
     /**
+     * get id.
+     *
+     * @return id.
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * set id the id.
+     *
+     * @param id the id.
+     */
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    /**
      * get first name.
      *
      * @return first name.
      */
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     /**
@@ -46,7 +65,7 @@ public class Contact implements Model {
      * @return list of phone numbers.
      */
     public List<PhoneNumber> getPhoneNumbers() {
-        return phoneNumbers;
+        return this.phoneNumbers;
     }
 
     /**
@@ -64,7 +83,7 @@ public class Contact implements Model {
      * @return last name.
      */
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     /**
@@ -82,7 +101,7 @@ public class Contact implements Model {
      * @return list of addresses.
      */
     public List<Address> getAddresses() {
-        return addresses;
+        return this.addresses;
     }
 
     /**
@@ -100,7 +119,7 @@ public class Contact implements Model {
      * @return list of social profile.
      */
     public List<SocialProfile> getSocialProfiles() {
-        return socialProfiles;
+        return this.socialProfiles;
     }
 
     /**
