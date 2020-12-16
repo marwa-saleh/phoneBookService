@@ -3,6 +3,7 @@ package test.java.com.phonebookservice.server;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.phonebookservice.config.Config.ConfigKey;
 import com.phonebookservice.controller.ContactController;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.FileDataAccessAdapter;
@@ -19,7 +20,7 @@ public class TestFileDataAccessAdapter {
     @Test
     public void testFileDataAccessAdapterWithCreateContact() {
         final IDataAccessAdapter databaseMock = FileDataAccessAdapter
-                .getInstance();
+                .getInstance(ConfigKey.FILE_PATH.getKey());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             databaseMock.create(new Contact());
         });
@@ -30,7 +31,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithGetContact() {
-        FileDataAccessAdapter adapter = FileDataAccessAdapter.getInstance();
+        FileDataAccessAdapter adapter = FileDataAccessAdapter
+                .getInstance(ConfigKey.FILE_PATH.getKey());
         Contact contact = ContactController.getInstance(adapter)
                 .get(TestSetUpUtil.CONTACT_ID);
         Assertions.assertNotNull(contact);
@@ -42,7 +44,7 @@ public class TestFileDataAccessAdapter {
     @Test
     public void testFileDataAccessAdapterWithDeleteContact() {
         final IDataAccessAdapter databaseMock = FileDataAccessAdapter
-                .getInstance();
+                .getInstance(ConfigKey.FILE_PATH.getKey());
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             databaseMock.delete(CONTACT_ID);
         });
@@ -54,7 +56,7 @@ public class TestFileDataAccessAdapter {
     @Test
     public void testFileDataAccessAdapterWithUpdateContact() {
         final IDataAccessAdapter databaseMock = FileDataAccessAdapter
-                .getInstance();
+                .getInstance(ConfigKey.FILE_PATH.getKey());
         final Contact contact = TestSetUpUtil
                 .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
