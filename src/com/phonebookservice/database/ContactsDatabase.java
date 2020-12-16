@@ -3,10 +3,8 @@ package com.phonebookservice.database;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import com.phonebookservice.model.Contact;
-import com.phonebookservice.util.CollectionUtility;
 import com.phonebookservice.util.MyArrayList;
 
 public final class ContactsDatabase {
@@ -61,39 +59,6 @@ public final class ContactsDatabase {
     }
 
     /**
-     * create the contact.
-     *
-     * @param contact the contact
-     */
-    public void create(final Contact contact) {
-        final Random rand = new Random();
-        final String lastNameOfNewContact = contact.getLastName();
-
-        if (CollectionUtility.isNotNullOrEmptyList(this.contactList)) {
-            final MyArrayList<Contact> contacts = //
-                    (MyArrayList<Contact>) this.contactList;
-            final Object[] contactsArray = contacts.toArray();
-            int length = contactsArray.length - 1;
-            int firstIndex = 0;
-
-            while (firstIndex <= length) {
-                final int middle = firstIndex + (length - firstIndex) / 2;
-
-                if (((Contact) contactsArray[middle]).getLastName()
-                        .compareTo(lastNameOfNewContact) < 0) {
-                    firstIndex = middle + 1;
-                } else {
-                    length = middle - 1;
-                }
-            }
-
-            contacts.add(firstIndex, contact);
-            this.addContactInMap(rand, contact);
-        }
-
-    }
-
-    /**
      * save contacts.
      */
     public void save() {
@@ -101,13 +66,4 @@ public final class ContactsDatabase {
         this.parser.writeContacts(this.contactList);
     }
 
-    private void addContactInMap(final Random rand, final Contact contact) {
-        final String randomIdValue = String.valueOf(rand.nextInt(10000));
-
-        if (this.contactMap.get(randomIdValue) == null) {
-            this.contactMap.put(randomIdValue, contact);
-        } else {
-            addContactInMap(rand, contact);
-        }
-    }
 }
