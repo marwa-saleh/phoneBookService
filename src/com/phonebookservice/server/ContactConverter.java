@@ -22,7 +22,7 @@ public final class ContactConverter {
      *
      * @return contact.
      */
-    public static Contact convertStringToContact(final String[] splitLine) {
+    public static Contact toContact(final String[] splitLine) {
         final Address address = Address.builder()
                 .withStreet(splitLine[ContactColumns.STREET.getKey()])
                 .withCity(splitLine[ContactColumns.CITY.getKey()]).build();
@@ -30,7 +30,10 @@ public final class ContactConverter {
         final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.MOBILE,
                 splitLine[ContactColumns.PHONE_NUMBER.getKey()]);
 
-        return Contact.builder().withId(splitLine[ContactColumns.ID.getKey()])
+        return Contact.builder()
+                .withId(splitLine[ContactColumns.ID.getKey()] != null
+                        ? Long.valueOf(splitLine[ContactColumns.ID.getKey()])
+                        : null)
                 .withLastName(splitLine[ContactColumns.LAST_NAME.getKey()])
                 .withFirstName(splitLine[ContactColumns.FIRST_NAME.getKey()])
                 .withAddresses(Arrays.asList(address))
@@ -44,7 +47,11 @@ public final class ContactConverter {
      *
      * @return string.
      */
-    public static String convertContactToString(final Contact contact) {
+    public static String toString(final Contact contact) {
+        final String contactId = contact.getId() != null
+                ? contact.getId().toString()
+                : "";
+
         final String street = CollectionUtility
                 .isNotNullOrEmptyList(contact.getAddresses())
                         ? contact.getAddresses().get(0).getStreet()
@@ -59,9 +66,8 @@ public final class ContactConverter {
                 .isNotNullOrEmptyList(contact.getPhoneNumbers())
                         ? contact.getPhoneNumbers().get(0).getNumber()
                         : "";
-        return new StringBuilder(contact.getId())
-                .append(ContactConverter.SPLITTER).append(contact.getLastName())
-                .append(ContactConverter.SPLITTER)
+        return new StringBuilder(contactId).append(ContactConverter.SPLITTER)
+                .append(contact.getLastName()).append(ContactConverter.SPLITTER)
                 .append(contact.getFirstName())
                 .append(ContactConverter.SPLITTER).append(street)
                 .append(ContactConverter.SPLITTER).append(city)

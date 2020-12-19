@@ -1,12 +1,12 @@
 package com.phonebookservice.server;
 
-import java.io.FileNotFoundException;
-
 import com.phonebookservice.config.Config;
 import com.phonebookservice.config.Config.ConfigKey;
 import com.phonebookservice.database.ContactsDatabase;
-import com.phonebookservice.exception.InternalServerException;
+import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.model.Contact;
+import com.phonebookservice.util.ErrorCode;
+import com.phonebookservice.util.ErrorMessages;
 import com.phonebookservice.util.StringUtility;
 
 /**
@@ -27,15 +27,16 @@ public final class FileDataAccessAdapter
      */
     private FileDataAccessAdapter(final String databaseLink) {
         if (StringUtility.isNullOrEmptyString(databaseLink)
-                || !databaseLink.equals(ConfigKey.FILE_PATH.getKey())) {
-            throw new InternalServerException(
-                    new FileNotFoundException(databaseLink));
+                || !databaseLink.equals(ConfigKey.FILENAME_PATH.getKey())) {
+            throw new BadRequestException(
+                    ErrorMessages.ERROR_DATABASE_LINK_IS_INVALID,
+                    ErrorCode.ERROR_DATABASE_LINK_INVALID);
         }
 
         // to-do: To be added in startup
         Config.getInstance();
         this.contactsDb = ContactsDatabase
-                .getInstance(Config.get(ConfigKey.FILE_PATH.getKey()));
+                .getInstance(Config.get(ConfigKey.FILENAME_PATH.getKey()));
     }
 
     /**

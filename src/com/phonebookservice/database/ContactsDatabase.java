@@ -9,9 +9,9 @@ import com.phonebookservice.util.MyArrayList;
 
 public final class ContactsDatabase {
     private static ContactsDatabase singleton;
-    private final ContactsFileParser parser;
+    private final ContactsFileParser contactsFileParser;
     private final Collection<Contact> contactList;
-    private final Map<String, Contact> idToContactMap;
+    private final Map<Long, Contact> idToContactMap;
 
     /**
      * Contacts database constructor.
@@ -19,10 +19,11 @@ public final class ContactsDatabase {
      * @param fileName the file name.
      */
     private ContactsDatabase(final String fileName) {
-        this.contactList = new MyArrayList<Contact>();
         this.idToContactMap = new HashMap<>();
-        this.parser = new ContactsFileParser(fileName);
-        this.readContacts();
+        this.contactsFileParser = new ContactsFileParser(fileName);
+        this.contactList = //
+                new MyArrayList<Contact>(contactsFileParser.readContacts());
+        addInContactMap();
     }
 
     /**
@@ -39,15 +40,6 @@ public final class ContactsDatabase {
         return singleton;
     }
 
-    private void readContacts() {
-        final Collection<Contact> contacts = this.parser.readContacts();
-        this.contactList.addAll(contacts);
-
-        for (Contact contact : contacts) {
-            this.idToContactMap.put(contact.getId(), contact);
-        }
-    }
-
     /**
      * get contact.
      *
@@ -55,7 +47,7 @@ public final class ContactsDatabase {
      * @return contact.
      */
     public Contact get(final Long contactId) {
-        return this.idToContactMap.get(contactId.toString());
+        return this.idToContactMap.get(contactId);
     }
 
     /**
@@ -63,7 +55,12 @@ public final class ContactsDatabase {
      */
     public void save() {
         // TODO to be done every time duration
-        this.parser.writeContacts(this.contactList);
+        this.contactsFileParser.writeContacts(this.contactList);
     }
 
+    private void addInContactMap() {
+        for (Contact contact : this.contactList) {
+            this.idToContactMap.put(contact.getId(), contact);
+        }
+    }
 }

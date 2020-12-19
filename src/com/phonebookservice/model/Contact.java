@@ -10,7 +10,7 @@ import com.phonebookservice.model.builder.ContactBuilder;
  * @author Marwa Saleh
  */
 public class Contact implements Model {
-    private String id;
+    private Long id;
     private String firstName;
     private String lastName;
     private List<Address> addresses;
@@ -28,7 +28,7 @@ public class Contact implements Model {
      *
      * @return id.
      */
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -37,7 +37,7 @@ public class Contact implements Model {
      *
      * @param id the id.
      */
-    public void setId(final String id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 

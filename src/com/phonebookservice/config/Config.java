@@ -6,12 +6,19 @@ import java.util.Properties;
 
 import com.phonebookservice.exception.InternalServerException;
 
+/**
+ * configuration class that will will load all the properties keys and values
+ * from config file.
+ *
+ * @author marwa.saleh
+ *
+ */
 public final class Config {
     private static final Properties PROP = new Properties();
     private static Config singleton;
 
     public enum ConfigKey {
-        FILE_PATH("phonebook.contact.filename");
+        FILENAME_PATH("phonebook.contact.filename");
 
         private String key;
 

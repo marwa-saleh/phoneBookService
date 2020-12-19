@@ -10,10 +10,13 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import com.phonebookservice.exception.ForbiddenException;
 import com.phonebookservice.exception.InternalServerException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.ContactConverter;
 import com.phonebookservice.util.CollectionUtility;
+import com.phonebookservice.util.ErrorCode;
+import com.phonebookservice.util.ErrorMessages;
 
 public class ContactsFileParser implements IContactsParser {
     private static final String ENCODING = "UTF-8";
@@ -40,12 +43,12 @@ public class ContactsFileParser implements IContactsParser {
             for (String line : lines) {
                 final String[] splitLine = line
                         .split(ContactConverter.SPLITTER);
-                final Contact contact = ContactConverter
-                        .convertStringToContact(splitLine);
+                final Contact contact = ContactConverter.toContact(splitLine);
                 contacts.add(contact);
             }
         } catch (IOException e) {
-            throw new InternalServerException(e);
+            throw new ForbiddenException(ErrorMessages.ERROR_READING_CONTACTS,
+                    ErrorCode.ERROR_READING_CONTACTS);
         }
 
         return contacts;
@@ -63,8 +66,7 @@ public class ContactsFileParser implements IContactsParser {
             }
 
             for (Contact contact : contacts) {
-                fileWriter.write(
-                        ContactConverter.convertContactToString(contact));
+                fileWriter.write(ContactConverter.toString(contact));
                 fileWriter.write(System.getProperty("line.separator"));
             }
         } catch (IOException e) {
@@ -74,7 +76,9 @@ public class ContactsFileParser implements IContactsParser {
                 try {
                     fileWriter.close();
                 } catch (IOException e) {
-                    throw new InternalServerException(e);
+                    throw new ForbiddenException(
+                            ErrorMessages.ERROR_WRITING_CONTACTS,
+                            ErrorCode.ERROR_WRITING_CONTACTS);
                 }
             }
         }

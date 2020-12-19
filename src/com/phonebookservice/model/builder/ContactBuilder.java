@@ -13,7 +13,7 @@ import com.phonebookservice.model.SocialProfile;
  * @author Marwa Saleh
  */
 public class ContactBuilder {
-    private String id;
+    private Long id;
     private String firstName;
     private String lastName;
     private List<Address> addresses;
@@ -44,7 +44,7 @@ public class ContactBuilder {
      * @param id the id.
      * @return contact builder
      */
-    public ContactBuilder withId(final String id) {
+    public ContactBuilder withId(final Long id) {
         this.id = id;
         return this;
     }
