@@ -41,10 +41,7 @@ public class ContactsFileParser implements IContactsParser {
                     ContactsFileParser.ENCODING);
 
             for (String line : lines) {
-                final String[] splitLine = line
-                        .split(ContactConverter.SPLITTER);
-                final Contact contact = ContactConverter.toContact(splitLine);
-                contacts.add(contact);
+                contacts.add(ContactConverter.toContact(line));
             }
         } catch (IOException e) {
             throw new ForbiddenException(ErrorMessages.ERROR_READING_CONTACTS,

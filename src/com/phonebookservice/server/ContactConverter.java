@@ -18,11 +18,12 @@ public final class ContactConverter {
     /**
      * map string to contact.
      *
-     * @param splitLine the line.
+     * @param line the line.
      *
      * @return contact.
      */
-    public static Contact toContact(final String[] splitLine) {
+    public static Contact toContact(final String line) {
+        final String[] splitLine = line.split(ContactConverter.SPLITTER);
         final Address address = Address.builder()
                 .withStreet(splitLine[ContactColumns.STREET.getKey()])
                 .withCity(splitLine[ContactColumns.CITY.getKey()]).build();

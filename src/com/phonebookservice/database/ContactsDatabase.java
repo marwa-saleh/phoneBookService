@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.phonebookservice.model.Contact;
+import com.phonebookservice.util.MapUtility;
 import com.phonebookservice.util.MyArrayList;
 
 public final class ContactsDatabase {
@@ -23,7 +24,10 @@ public final class ContactsDatabase {
         this.contactsFileParser = new ContactsFileParser(fileName);
         this.contactList = //
                 new MyArrayList<Contact>(contactsFileParser.readContacts());
-        addInContactMap();
+
+        for (Contact contact : this.contactList) {
+            this.idToContactMap.put(contact.getId(), contact);
+        }
     }
 
     /**
@@ -47,6 +51,11 @@ public final class ContactsDatabase {
      * @return contact.
      */
     public Contact get(final Long contactId) {
+        if (contactId == null
+                || MapUtility.isNullOrEmptyMap(this.idToContactMap)) {
+            return null;
+        }
+
         return this.idToContactMap.get(contactId);
     }
 
@@ -56,11 +65,5 @@ public final class ContactsDatabase {
     public void save() {
         // TODO to be done every time duration
         this.contactsFileParser.writeContacts(this.contactList);
-    }
-
-    private void addInContactMap() {
-        for (Contact contact : this.contactList) {
-            this.idToContactMap.put(contact.getId(), contact);
-        }
     }
 }
