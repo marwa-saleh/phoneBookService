@@ -15,7 +15,7 @@ public final class ErrorMessages {
 
     public static final String ERROR_DATABASE_NOT_FOUND //
             = "Database object cannot be null";
-    public static final String ERROR_CONTACT_IS_NULL = "contact cannot be null";
+    public static final String ERROR_CONTACT_IS_NULL = "Contact cannot be null";
     public static final String ERROR_CONTACT_IS_NOT_FOUND //
             = "Contact is not found";
     public static final String ERROR_LAST_NAME_IS_NULL //

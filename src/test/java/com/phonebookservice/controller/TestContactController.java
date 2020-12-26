@@ -3,7 +3,6 @@ package test.java.com.phonebookservice.controller;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -182,30 +181,6 @@ public class TestContactController {
 
         Mockito.verify(databaseMock, Mockito.times(1))
                 .delete(TestSetUpUtil.CONTACT_ID);
-    }
-
-    /**
-     * test delete contact with contact not exist.
-     */
-    @Ignore
-    @Test
-    public void testDeleteContactWithContactNotExist() {
-        final IDataAccessAdapter databaseMock = Mockito
-                .mock(IDataAccessAdapter.class);
-        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
-                .thenReturn(null);
-
-        final NotFoundException exception = Assertions
-                .assertThrows(NotFoundException.class, () -> {
-                    ContactController.getInstance(databaseMock)
-                            .delete(TestSetUpUtil.CONTACT_ID);
-                });
-
-        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
-                exception.getMessage());
-
-        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
-                exception.getErrorCode());
     }
 
     /**
