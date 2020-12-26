@@ -166,24 +166,6 @@ public class TestContactController {
     }
 
     /**
-     * test delete contact.
-     */
-    @Test
-    public void testDeleteContact() {
-        final IDataAccessAdapter databaseMock = Mockito
-                .mock(IDataAccessAdapter.class);
-        Mockito.doNothing().when(databaseMock).delete(TestSetUpUtil.CONTACT_ID);
-        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
-                .thenReturn(new Contact());
-
-        ContactController.getInstance(databaseMock)
-                .delete(TestSetUpUtil.CONTACT_ID);
-
-        Mockito.verify(databaseMock, Mockito.times(1))
-                .delete(TestSetUpUtil.CONTACT_ID);
-    }
-
-    /**
      * test delete contact with contact id is null.
      */
     @Test
