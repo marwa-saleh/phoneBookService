@@ -3,6 +3,7 @@ package test.java.com.phonebookservice.controller;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -186,6 +187,7 @@ public class TestContactController {
     /**
      * test delete contact with contact not exist.
      */
+    @Ignore
     @Test
     public void testDeleteContactWithContactNotExist() {
         final IDataAccessAdapter databaseMock = Mockito

@@ -88,7 +88,7 @@ public final class ContactController extends AbstractController<Contact> {
     public Contact update(final Long contactId, final Contact contact) {
         ContactController.checkContactId(contactId);
         ContactController.validateContact(contact);
-        final Contact existedContact = getDatabase().get(contactId);
+        final Contact existedContact = super.getDatabase().get(contactId);
         ContactController.validateExisitingContact(existedContact);
         return super.getDatabase().update(contactId, contact);
     }
