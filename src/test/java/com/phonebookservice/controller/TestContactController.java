@@ -205,6 +205,29 @@ public class TestContactController {
     }
 
     /**
+     * test delete contact with contact not found.
+     */
+    @Test
+    public void testDeleteContactWithNotFoundContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(null);
+
+        final NotFoundException exception = Assertions
+                .assertThrows(NotFoundException.class, () -> {
+                    ContactController.getInstance(databaseMock)
+                            .delete(TestSetUpUtil.CONTACT_ID);
+                });
+
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
+                exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
+                exception.getErrorCode());
+    }
+
+    /**
      * test update contact.
      */
     @Test
