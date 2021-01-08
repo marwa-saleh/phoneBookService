@@ -24,6 +24,8 @@ public final class ErrorMessages {
             = "Contact id cannot be null";
     public static final String ERROR_DATABASE_LINK_IS_INVALID //
             = "Database link id is invalid";
+    public static final String ERROR_FILENAME_IS_NULL_OR_EMPTY //
+    = "Filename is null or empty";
     public static final String ERROR_READING_CONTACTS //
             = "Error reading contacts from file";
     public static final String ERROR_WRITING_CONTACTS //
