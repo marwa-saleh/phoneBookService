@@ -34,9 +34,9 @@ public abstract class TestSetUpUtil {
      * @return contact
      */
     public static Contact createContact(final String lastName) {
-    	return createContact(lastName, CONTACT_ID);
+        return createContact(lastName, CONTACT_ID);
     }
-    
+
     /**
      * create contact object.
      *

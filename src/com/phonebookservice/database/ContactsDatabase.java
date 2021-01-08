@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.mockito.internal.util.StringUtil;
-
 import com.phonebookservice.exception.BadRequestException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.util.ErrorCode;
@@ -26,20 +24,19 @@ public final class ContactsDatabase {
      * @param fileName the file name.
      */
     private ContactsDatabase(final String fileName) {
-    	if(StringUtility.isNullOrEmptyString(fileName)) {
-    		 throw new BadRequestException(
+      if (StringUtility.isNullOrEmptyString(fileName)) {
+            throw new BadRequestException(
                      ErrorMessages.ERROR_FILENAME_IS_NULL_OR_EMPTY,
                      ErrorCode.ERROR_FILENAME_IS_NULL_OR_EMPTY);
-    	}
-    	
+      }
+
         this.idToContactMap = new HashMap<>();
         this.contactsFileParser = new ContactsFileParser(fileName);
-        final Collection<Contact> contacts =  
-        		contactsFileParser.readContacts();
+        final Collection<Contact> contacts = contactsFileParser.readContacts();
         this.contactList = new MyArrayList<Contact>();
 
         for (Contact contact : contacts) {
-        	this.contactList.add(contact);
+            this.contactList.add(contact);
             this.idToContactMap.put(contact.getId(), contact);
         }
     }

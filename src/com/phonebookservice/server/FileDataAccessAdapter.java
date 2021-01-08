@@ -38,14 +38,14 @@ public final class FileDataAccessAdapter
         this.contactsDb = ContactsDatabase
                 .getInstance(Config.get(ConfigKey.FILENAME_PATH.getKey()));
     }
-    
+
     /**
      * Initialization of file data access adapter.
      *
      * @param database the database.
      */
     private FileDataAccessAdapter(final ContactsDatabase database) {
-    	this.contactsDb = database;
+       this.contactsDb = database;
     }
 
     /**
@@ -61,15 +61,16 @@ public final class FileDataAccessAdapter
 
         return singleton;
     }
-    
+
     /**
      * Get instance of file data access adapter.
      *
      * @param database the database.
      * @return file data access adapter.
      */
-    public static FileDataAccessAdapter getInstance(final ContactsDatabase database) {
-    	 if (singleton == null) {
+     public static FileDataAccessAdapter getInstance(
+                                       final ContactsDatabase database) {
+        if (singleton == null) {
              singleton = new FileDataAccessAdapter(database);
          }
 
