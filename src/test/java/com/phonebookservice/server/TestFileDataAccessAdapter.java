@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.phonebookservice.database.ContactsDatabase;
-import com.phonebookservice.exception.BadRequestException;
+import com.phonebookservice.exception.InternalServerException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.server.FileDataAccessAdapter;
 import com.phonebookservice.util.ErrorCode;
@@ -35,8 +35,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithNotFoundFileName() {
-        final BadRequestException exception = Assertions
-                .assertThrows(BadRequestException.class, () -> {
+        final InternalServerException exception = Assertions
+                .assertThrows(InternalServerException.class, () -> {
                     FileDataAccessAdapter.getInstance("test");
                 });
 
