@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.phonebookservice.exception.InternalServerException;
-
 /**
  * configuration class that will will load all the properties keys and values
  * from config file.
@@ -39,8 +37,9 @@ public final class Config {
      * config instance.
      *
      * @return config
+     * @throws IOException
      */
-    public static Config getInstance() {
+    public static Config getInstance() throws IOException {
         if (singleton == null) {
             singleton = new Config();
         }
@@ -48,20 +47,14 @@ public final class Config {
         return singleton;
     }
 
-    private Config() {
+    private Config() throws IOException {
         final InputStream input = getClass().getClassLoader()
                 .getResourceAsStream("config.properties");
         try {
             PROP.load(input);
-        } catch (IOException e) {
-            throw new InternalServerException(e);
         } finally {
             if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    throw new InternalServerException(e);
-                }
+                input.close();
             }
         }
     }
@@ -72,7 +65,7 @@ public final class Config {
      * @param key the key.
      * @return value.
      */
-    public static String get(final String key) {
+    public String get(final String key) {
         return PROP.getProperty(key);
     }
 

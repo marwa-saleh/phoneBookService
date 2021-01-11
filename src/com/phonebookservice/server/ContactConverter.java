@@ -12,7 +12,6 @@ public final class ContactConverter {
     public static final String SPLITTER = ",";
 
     private ContactConverter() {
-
     }
 
     /**
@@ -23,22 +22,36 @@ public final class ContactConverter {
      * @return contact.
      */
     public static Contact toContact(final String line) {
-        final String[] splitLine = line.split(ContactConverter.SPLITTER);
+        final String[] splitLine = line
+                .split(ContactConverter.SPLITTER);
         final Address address = Address.builder()
-                .withStreet(splitLine[ContactColumns.STREET.getKey()])
-                .withCity(splitLine[ContactColumns.CITY.getKey()]).build();
+                .withStreet(splitLine[ContactColumns.STREET
+                        .getKey()])
+                .withCity(splitLine[ContactColumns.CITY
+                        .getKey()])
+                .build();
 
-        final PhoneNumber phoneNumber = new PhoneNumber(PhoneLabel.MOBILE,
-                splitLine[ContactColumns.PHONE_NUMBER.getKey()]);
+        final PhoneNumber phoneNumber = new PhoneNumber(
+                PhoneLabel.MOBILE,
+                splitLine[ContactColumns.PHONE_NUMBER
+                        .getKey()]);
 
         return Contact.builder()
-                .withId(splitLine[ContactColumns.ID.getKey()] != null
-                        ? Long.valueOf(splitLine[ContactColumns.ID.getKey()])
-                        : null)
-                .withLastName(splitLine[ContactColumns.LAST_NAME.getKey()])
-                .withFirstName(splitLine[ContactColumns.FIRST_NAME.getKey()])
+                .withId(splitLine[ContactColumns.ID
+                        .getKey()] != null ? Long.valueOf(
+                                splitLine[ContactColumns.ID
+                                        .getKey()])
+                                : null)
+                .withLastName(
+                        splitLine[ContactColumns.LAST_NAME
+                                .getKey()])
+                .withFirstName(
+                        splitLine[ContactColumns.FIRST_NAME
+                                .getKey()])
                 .withAddresses(Arrays.asList(address))
-                .withPhoneNumbers(Arrays.asList(phoneNumber)).build();
+                .withPhoneNumbers(
+                        Arrays.asList(phoneNumber))
+                .build();
     }
 
     /**
@@ -54,25 +67,36 @@ public final class ContactConverter {
                 : "";
 
         final String street = CollectionUtility
-                .isNotNullOrEmptyList(contact.getAddresses())
-                        ? contact.getAddresses().get(0).getStreet()
-                        : "";
+                .isNotNullOrEmptyList(
+                        contact.getAddresses())
+                                ? contact.getAddresses()
+                                        .get(0).getStreet()
+                                : "";
 
         final String city = CollectionUtility
-                .isNotNullOrEmptyList(contact.getAddresses())
-                        ? contact.getAddresses().get(0).getCity()
-                        : "";
+                .isNotNullOrEmptyList(
+                        contact.getAddresses())
+                                ? contact.getAddresses()
+                                        .get(0).getCity()
+                                : "";
 
         final String number = CollectionUtility
-                .isNotNullOrEmptyList(contact.getPhoneNumbers())
-                        ? contact.getPhoneNumbers().get(0).getNumber()
-                        : "";
-        return new StringBuilder(contactId).append(ContactConverter.SPLITTER)
-                .append(contact.getLastName()).append(ContactConverter.SPLITTER)
+                .isNotNullOrEmptyList(
+                        contact.getPhoneNumbers())
+                                ? contact.getPhoneNumbers()
+                                        .get(0).getNumber()
+                                : "";
+        return new StringBuilder(contactId)
+                .append(ContactConverter.SPLITTER)
+                .append(contact.getLastName())
+                .append(ContactConverter.SPLITTER)
                 .append(contact.getFirstName())
-                .append(ContactConverter.SPLITTER).append(street)
-                .append(ContactConverter.SPLITTER).append(city)
-                .append(ContactConverter.SPLITTER).append(number).toString();
+                .append(ContactConverter.SPLITTER)
+                .append(street)
+                .append(ContactConverter.SPLITTER)
+                .append(city)
+                .append(ContactConverter.SPLITTER)
+                .append(number).toString();
 
     }
 }

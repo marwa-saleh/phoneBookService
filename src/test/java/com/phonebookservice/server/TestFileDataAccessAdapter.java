@@ -24,8 +24,8 @@ public class TestFileDataAccessAdapter {
      */
     @AfterEach
     public void resetSingleton() throws Exception {
-        Field instance = FileDataAccessAdapter.class.
-                getDeclaredField("singleton");
+        Field instance = FileDataAccessAdapter.class
+                .getDeclaredField("singleton");
         instance.setAccessible(true);
         instance.set(null, null);
     }
@@ -35,15 +35,15 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithNotFoundFileName() {
-        final BadRequestException exception = Assertions.assertThrows(
-                BadRequestException.class, () -> {
-            FileDataAccessAdapter.getInstance("test");
-        });
+        final BadRequestException exception = Assertions
+                .assertThrows(BadRequestException.class, () -> {
+                    FileDataAccessAdapter.getInstance("test");
+                });
 
         Assertions.assertEquals(ErrorMessages.ERROR_DATABASE_LINK_IS_INVALID,
                 exception.getMessage());
-        Assertions.assertEquals(ErrorCode.ERROR_DATABASE_LINK_INVALID, exception
-                .getErrorCode());
+        Assertions.assertEquals(ErrorCode.ERROR_DATABASE_LINK_INVALID,
+                exception.getErrorCode());
     }
 
     /**
@@ -51,8 +51,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithCreateContact() {
-        final ContactsDatabase databaseMock = Mockito.mock(
-                ContactsDatabase.class);
+        final ContactsDatabase databaseMock = Mockito
+                .mock(ContactsDatabase.class);
         final FileDataAccessAdapter adapter = FileDataAccessAdapter
                 .getInstance(databaseMock);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
@@ -65,10 +65,10 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithGetNullContact() {
-        final ContactsDatabase databaseMock = Mockito.mock(
-                ContactsDatabase.class);
-        final FileDataAccessAdapter adapter = FileDataAccessAdapter.
-                getInstance(databaseMock);
+        final ContactsDatabase databaseMock = Mockito
+                .mock(ContactsDatabase.class);
+        final FileDataAccessAdapter adapter = FileDataAccessAdapter
+                .getInstance(databaseMock);
 
         final Contact contact = adapter.get(null);
         Assertions.assertNull(contact);
@@ -79,22 +79,22 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithGetContact() {
-        final ContactsDatabase databaseMock = Mockito.mock(
-                ContactsDatabase.class);
-        final Contact existContact = TestSetUpUtil.createContact(
-                TestSetUpUtil.CONTACT_LAST_NAME);
+        final ContactsDatabase databaseMock = Mockito
+                .mock(ContactsDatabase.class);
+        final Contact existContact = TestSetUpUtil
+                .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
 
-        Mockito.when(databaseMock.get(
-                TestSetUpUtil.CONTACT_ID)).thenReturn(existContact);
-        final FileDataAccessAdapter adapter =  FileDataAccessAdapter.
-                getInstance(databaseMock);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(existContact);
+        final FileDataAccessAdapter adapter = FileDataAccessAdapter
+                .getInstance(databaseMock);
 
         final Contact contact = adapter.get(TestSetUpUtil.CONTACT_ID);
         Assertions.assertNotNull(contact);
-        Assertions.assertEquals(
-                TestSetUpUtil.CONTACT_LAST_NAME, contact.getLastName());
-        Assertions.assertEquals(
-                TestSetUpUtil.CONTACT_FIRST_NAME, contact.getFirstName());
+        Assertions.assertEquals(TestSetUpUtil.CONTACT_LAST_NAME,
+                contact.getLastName());
+        Assertions.assertEquals(TestSetUpUtil.CONTACT_FIRST_NAME,
+                contact.getFirstName());
     }
 
     /**
@@ -102,10 +102,10 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithDeleteContact() {
-        final ContactsDatabase databaseMock = Mockito.mock(
-                ContactsDatabase.class);
-        final FileDataAccessAdapter adapter = FileDataAccessAdapter.
-                getInstance(databaseMock);
+        final ContactsDatabase databaseMock = Mockito
+                .mock(ContactsDatabase.class);
+        final FileDataAccessAdapter adapter = FileDataAccessAdapter
+                .getInstance(databaseMock);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             adapter.delete(CONTACT_ID);
         });
@@ -116,12 +116,12 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithUpdateContact() {
-        final ContactsDatabase databaseMock = Mockito.mock(
-                ContactsDatabase.class);
+        final ContactsDatabase databaseMock = Mockito
+                .mock(ContactsDatabase.class);
         final FileDataAccessAdapter adapter = FileDataAccessAdapter
                 .getInstance(databaseMock);
-        final Contact contact = TestSetUpUtil.createContact(
-                TestSetUpUtil.CONTACT_LAST_NAME);
+        final Contact contact = TestSetUpUtil
+                .createContact(TestSetUpUtil.CONTACT_LAST_NAME);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             adapter.update(CONTACT_ID, contact);
         });
@@ -132,8 +132,8 @@ public class TestFileDataAccessAdapter {
      */
     @Test
     public void testFileDataAccessAdapterWithSaveContact() {
-        final ContactsDatabase databaseMock = Mockito.mock(
-                ContactsDatabase.class);
+        final ContactsDatabase databaseMock = Mockito
+                .mock(ContactsDatabase.class);
         Mockito.doNothing().when(databaseMock).save();
         FileDataAccessAdapter.getInstance(databaseMock).save();
 

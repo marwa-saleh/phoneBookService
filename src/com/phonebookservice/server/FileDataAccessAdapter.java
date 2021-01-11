@@ -1,9 +1,11 @@
 package com.phonebookservice.server;
 
+import java.io.IOException;
+
 import com.phonebookservice.config.Config;
 import com.phonebookservice.config.Config.ConfigKey;
 import com.phonebookservice.database.ContactsDatabase;
-import com.phonebookservice.exception.BadRequestException;
+import com.phonebookservice.exception.InternalServerException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
@@ -28,15 +30,27 @@ public final class FileDataAccessAdapter
     private FileDataAccessAdapter(final String databaseLink) {
         if (StringUtility.isNullOrEmptyString(databaseLink)
                 || !databaseLink.equals(ConfigKey.FILENAME_PATH.getKey())) {
-            throw new BadRequestException(
+            throw new InternalServerException(
                     ErrorMessages.ERROR_DATABASE_LINK_IS_INVALID,
                     ErrorCode.ERROR_DATABASE_LINK_INVALID);
         }
 
-        // to-do: To be added in startup
-        Config.getInstance();
-        this.contactsDb = ContactsDatabase
-                .getInstance(Config.get(ConfigKey.FILENAME_PATH.getKey()));
+        String fileName;
+
+        try {
+            fileName = Config.getInstance()
+                    .get(ConfigKey.FILENAME_PATH.getKey());
+        } catch (IOException e) {
+            throw new InternalServerException(e);
+        }
+
+        if (StringUtility.isNullOrEmptyString(fileName)) {
+            throw new InternalServerException(
+                    ErrorMessages.ERROR_FILENAME_IS_NULL_OR_EMPTY,
+                    ErrorCode.ERROR_FILENAME_IS_NULL_OR_EMPTY);
+        }
+
+        this.contactsDb = ContactsDatabase.getInstance(fileName);
     }
 
     /**
@@ -45,7 +59,7 @@ public final class FileDataAccessAdapter
      * @param database the database.
      */
     private FileDataAccessAdapter(final ContactsDatabase database) {
-       this.contactsDb = database;
+        this.contactsDb = database;
     }
 
     /**
@@ -68,13 +82,13 @@ public final class FileDataAccessAdapter
      * @param database the database.
      * @return file data access adapter.
      */
-     public static FileDataAccessAdapter getInstance(
-                                       final ContactsDatabase database) {
+    public static FileDataAccessAdapter getInstance(
+            final ContactsDatabase database) {
         if (singleton == null) {
-             singleton = new FileDataAccessAdapter(database);
-         }
+            singleton = new FileDataAccessAdapter(database);
+        }
 
-         return singleton;
+        return singleton;
     }
 
     /**

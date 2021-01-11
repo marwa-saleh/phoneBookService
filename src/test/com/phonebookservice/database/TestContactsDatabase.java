@@ -20,6 +20,8 @@ import com.phonebookservice.util.ErrorMessages;
 import test.java.com.phonebookservice.util.TestSetUpUtil;
 
 public class TestContactsDatabase {
+    private static String testDatabaseFile = "testFiles/TestDatabaseFile";
+
     /**
      * reset singleton after each test.
      */
@@ -29,9 +31,9 @@ public class TestContactsDatabase {
         instance.setAccessible(true);
         instance.set(null, null);
 
-       ContactsFileParser parser = new ContactsFileParser(
-               "testFiles/TestDatabaseFile");
-       parser.writeContacts(new ArrayList<>());
+        ContactsFileParser parser = new ContactsFileParser(
+                "testFiles/TestDatabaseFile");
+        parser.writeContacts(new ArrayList<>());
     }
 
     /**
@@ -39,10 +41,9 @@ public class TestContactsDatabase {
      */
     @BeforeEach
     public void writeContacts() {
-        ContactsFileParser parser  = new ContactsFileParser(
-                "testFiles/TestDatabaseFile");
-        List<Contact> contacts = Lists.newArrayList(TestSetUpUtil
-                 .createContact(TestSetUpUtil.CONTACT_LAST_NAME));
+        ContactsFileParser parser = new ContactsFileParser(testDatabaseFile);
+        List<Contact> contacts = Lists.newArrayList(
+                TestSetUpUtil.createContact(TestSetUpUtil.CONTACT_LAST_NAME));
         parser.writeContacts(contacts);
     }
 
@@ -51,10 +52,10 @@ public class TestContactsDatabase {
      */
     @Test
     public void testContactsDatabaseWithNotFoundFileName() {
-           final BadRequestException exception = Assertions.
-               assertThrows(BadRequestException.class, () -> {
-           ContactsDatabase.getInstance(null);
-        });
+        final BadRequestException exception = Assertions
+                .assertThrows(BadRequestException.class, () -> {
+                    ContactsDatabase.getInstance(null);
+                });
 
         Assertions.assertEquals(ErrorMessages.ERROR_FILENAME_IS_NULL_OR_EMPTY,
                 exception.getMessage());
@@ -67,14 +68,14 @@ public class TestContactsDatabase {
      */
     @Test
     public void testContactsDatabaseWithGetContact() {
-        final ContactsDatabase database = ContactsDatabase.getInstance(
-                "testFiles/TestDatabaseFile");
+        final ContactsDatabase database = ContactsDatabase
+                .getInstance(testDatabaseFile);
 
         final Contact contact = database.get(TestSetUpUtil.CONTACT_ID);
         Assertions.assertNotNull(contact);
-        Assertions.assertEquals(
-                TestSetUpUtil.CONTACT_LAST_NAME, contact.getLastName());
+        Assertions.assertEquals(TestSetUpUtil.CONTACT_LAST_NAME,
+                contact.getLastName());
         Assertions.assertEquals(TestSetUpUtil.CONTACT_FIRST_NAME,
-            contact.getFirstName());
+                contact.getFirstName());
     }
 }

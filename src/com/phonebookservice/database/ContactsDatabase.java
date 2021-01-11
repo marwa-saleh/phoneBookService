@@ -4,11 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.phonebookservice.exception.BadRequestException;
+import com.phonebookservice.exception.InternalServerException;
 import com.phonebookservice.model.Contact;
 import com.phonebookservice.util.ErrorCode;
 import com.phonebookservice.util.ErrorMessages;
-import com.phonebookservice.util.MapUtility;
 import com.phonebookservice.util.MyArrayList;
 import com.phonebookservice.util.StringUtility;
 
@@ -24,11 +23,11 @@ public final class ContactsDatabase {
      * @param fileName the file name.
      */
     private ContactsDatabase(final String fileName) {
-      if (StringUtility.isNullOrEmptyString(fileName)) {
-            throw new BadRequestException(
-                     ErrorMessages.ERROR_FILENAME_IS_NULL_OR_EMPTY,
-                     ErrorCode.ERROR_FILENAME_IS_NULL_OR_EMPTY);
-      }
+        if (StringUtility.isNullOrEmptyString(fileName)) {
+            throw new InternalServerException(
+                    ErrorMessages.ERROR_FILENAME_IS_NULL_OR_EMPTY,
+                    ErrorCode.ERROR_FILENAME_IS_NULL_OR_EMPTY);
+        }
 
         this.idToContactMap = new HashMap<>();
         this.contactsFileParser = new ContactsFileParser(fileName);
@@ -62,8 +61,7 @@ public final class ContactsDatabase {
      * @return contact.
      */
     public Contact get(final Long contactId) {
-        if (contactId == null
-                || MapUtility.isNullOrEmptyMap(this.idToContactMap)) {
+        if (contactId == null) {
             return null;
         }
 
