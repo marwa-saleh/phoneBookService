@@ -114,7 +114,7 @@ public final class FileDataAccessAdapter
      */
     @Override
     public void create(final Contact contact) {
-        throw new UnsupportedOperationException();
+        this.contactsDb.create(contact);
     }
 
     /**

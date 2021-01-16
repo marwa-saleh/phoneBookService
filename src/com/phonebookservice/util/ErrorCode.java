@@ -30,4 +30,8 @@ public final class ErrorCode {
             = "ERROR_READING_CONTACTS";
     public static final String ERROR_WRITING_CONTACTS //
             = "ERROR_WRITING_CONTACTS";
+    public static final String ERROR_CONTACT_ID_ALREADY_EXISIT //
+            = "ERROR_CONTACT_ID_ALREADY_EXISIT";
+    public static final String ERROR_CONTACT_INVALID //
+            = "ERROR_CONTACT_INVALID";
 }
