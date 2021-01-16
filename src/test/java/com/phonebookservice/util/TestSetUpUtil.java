@@ -34,6 +34,17 @@ public abstract class TestSetUpUtil {
      * @return contact
      */
     public static Contact createContact(final String lastName) {
+        return createContact(lastName, CONTACT_ID);
+    }
+
+    /**
+     * create contact object.
+     *
+     * @param lastName the last name.
+     * @param id the contact id.
+     * @return contact
+     */
+    public static Contact createContact(final String lastName, final Long id) {
         final Address address = Address.builder().withStreet(CONTACT_STREET)
                 .withDistrict(CONTACT_DISTRICT).withCountry(CONTACT_COUNTRY)
                 .withCity(CONTACT_CITY).build();
@@ -43,6 +54,7 @@ public abstract class TestSetUpUtil {
 
         return Contact.builder().withLastName(lastName)
                 .withFirstName(CONTACT_FIRST_NAME)
+                .withId(id)
                 .withAddresses(Arrays.asList(address))
                 .withPhoneNumbers(Arrays.asList(phoneNumber)).build();
     }

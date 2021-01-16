@@ -35,6 +35,17 @@ public class MyArrayList<T> implements List<T> {
     }
 
     /**
+     * Initialization of array.
+     *
+     * @param collection the collection.
+     */
+    public MyArrayList(final Collection<? extends T> collection) {
+        this.data = (T[]) new Object[collection.size()];
+        this.addAll(collection);
+        this.size = this.data.length;
+    }
+
+    /**
      * Appends the element to the end of this list.
      *
      * @param element the element.
@@ -355,7 +366,7 @@ public class MyArrayList<T> implements List<T> {
      */
     @Override
     public boolean remove(final Object element) {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.size; i++) {
             if (this.checkIfEqual(element, i)) {
                 this.shiftRemove(i);
                 return true;
@@ -455,7 +466,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     private void shiftRemove(final int i) {
-        for (int j = i; j < this.size; j++) {
+        for (int j = i; j < this.size - 1; j++) {
             this.data[j] = this.data[j + 1];
         }
         this.data[--this.size] = null;
@@ -492,7 +503,7 @@ public class MyArrayList<T> implements List<T> {
         int changed = 0;
         int index = 0;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.size; i++) {
             boolean contains = false;
             boolean retain = true;
 

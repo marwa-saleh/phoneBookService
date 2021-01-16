@@ -22,4 +22,12 @@ public final class ErrorCode {
             = "ERROR_LAST_NAME_MISSING";
     public static final String ERROR_CONTACT_ID_MISSING //
             = "ERROR_CONTACT_ID_MISSING";
+    public static final String ERROR_DATABASE_LINK_INVALID //
+            = "ERROR_DATABASE_LINK_INVALID";
+    public static final String ERROR_FILENAME_IS_NULL_OR_EMPTY //
+            = "ERROR_FILENAME_IS_NULL_OR_EMPTY";
+    public static final String ERROR_READING_CONTACTS //
+            = "ERROR_READING_CONTACTS";
+    public static final String ERROR_WRITING_CONTACTS //
+            = "ERROR_WRITING_CONTACTS";
 }

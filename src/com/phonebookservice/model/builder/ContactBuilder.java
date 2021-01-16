@@ -13,6 +13,7 @@ import com.phonebookservice.model.SocialProfile;
  * @author Marwa Saleh
  */
 public class ContactBuilder {
+    private Long id;
     private String firstName;
     private String lastName;
     private List<Address> addresses;
@@ -34,6 +35,17 @@ public class ContactBuilder {
     public ContactBuilder withPhoneNumbers(
             final List<PhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+        return this;
+    }
+
+    /**
+     * set id.
+     *
+     * @param id the id.
+     * @return contact builder
+     */
+    public ContactBuilder withId(final Long id) {
+        this.id = id;
         return this;
     }
 
@@ -89,11 +101,12 @@ public class ContactBuilder {
      */
     public Contact build() {
         Contact contact = new Contact();
-        contact.setFirstName(firstName);
-        contact.setLastName(lastName);
-        contact.setAddresses(addresses);
-        contact.setPhoneNumbers(phoneNumbers);
-        contact.setSocialProfiles(socialProfiles);
+        contact.setId(this.id);
+        contact.setFirstName(this.firstName);
+        contact.setLastName(this.lastName);
+        contact.setAddresses(this.addresses);
+        contact.setPhoneNumbers(this.phoneNumbers);
+        contact.setSocialProfiles(this.socialProfiles);
         return contact;
     }
 

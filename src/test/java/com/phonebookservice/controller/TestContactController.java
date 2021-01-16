@@ -166,47 +166,6 @@ public class TestContactController {
     }
 
     /**
-     * test delete contact.
-     */
-    @Test
-    public void testDeleteContact() {
-        final IDataAccessAdapter databaseMock = Mockito
-                .mock(IDataAccessAdapter.class);
-        Mockito.doNothing().when(databaseMock).delete(TestSetUpUtil.CONTACT_ID);
-        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
-                .thenReturn(new Contact());
-
-        ContactController.getInstance(databaseMock)
-                .delete(TestSetUpUtil.CONTACT_ID);
-
-        Mockito.verify(databaseMock, Mockito.times(1))
-                .delete(TestSetUpUtil.CONTACT_ID);
-    }
-
-    /**
-     * test delete contact with contact not exist.
-     */
-    @Test
-    public void testDeleteContactWithContactNotExist() {
-        final IDataAccessAdapter databaseMock = Mockito
-                .mock(IDataAccessAdapter.class);
-        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
-                .thenReturn(null);
-
-        final NotFoundException exception = Assertions
-                .assertThrows(NotFoundException.class, () -> {
-                    ContactController.getInstance(databaseMock)
-                            .delete(TestSetUpUtil.CONTACT_ID);
-                });
-
-        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
-                exception.getMessage());
-
-        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
-                exception.getErrorCode());
-    }
-
-    /**
      * test delete contact with contact id is null.
      */
     @Test
@@ -223,6 +182,48 @@ public class TestContactController {
                 exception.getMessage());
 
         Assertions.assertEquals(ErrorCode.ERROR_CONTACT_ID_MISSING,
+                exception.getErrorCode());
+    }
+
+    /**
+     * test mocking delete contact.
+     */
+    @Test
+    public void testMockedDeleteContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Mockito.doNothing().when(databaseMock).delete(TestSetUpUtil.CONTACT_ID);
+
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(new Contact());
+
+        ContactController.getInstance(databaseMock)
+                .delete(TestSetUpUtil.CONTACT_ID);
+
+        Mockito.verify(databaseMock, Mockito.times(1))
+                .delete(TestSetUpUtil.CONTACT_ID);
+    }
+
+    /**
+     * test delete contact with contact not found.
+     */
+    @Test
+    public void testDeleteContactWithNotFoundContact() {
+        final IDataAccessAdapter databaseMock = Mockito
+                .mock(IDataAccessAdapter.class);
+        Mockito.when(databaseMock.get(TestSetUpUtil.CONTACT_ID))
+                .thenReturn(null);
+
+        final NotFoundException exception = Assertions
+                .assertThrows(NotFoundException.class, () -> {
+                    ContactController.getInstance(databaseMock)
+                            .delete(TestSetUpUtil.CONTACT_ID);
+                });
+
+        Assertions.assertEquals(ErrorMessages.ERROR_CONTACT_IS_NOT_FOUND,
+                exception.getMessage());
+
+        Assertions.assertEquals(ErrorCode.ERROR_CONTACT_NOT_FOUND,
                 exception.getErrorCode());
     }
 
