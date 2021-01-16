@@ -25,9 +25,13 @@ public final class ErrorMessages {
     public static final String ERROR_DATABASE_LINK_IS_INVALID //
             = "Database link id is invalid";
     public static final String ERROR_FILENAME_IS_NULL_OR_EMPTY //
-    = "Filename is null or empty";
+            = "Filename is null or empty";
     public static final String ERROR_READING_CONTACTS //
             = "Error reading contacts from file";
     public static final String ERROR_WRITING_CONTACTS //
             = "Error wrting contacts in file";
+    public static final String ERROR_CONTACT_ID_ALREADY_EXISIT //
+            = "Contact id already exist";
+    public static final String ERROR_CONTACT_INVALID //
+            = "Contact is invalid";
 }
